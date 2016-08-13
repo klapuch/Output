@@ -10,15 +10,15 @@ final class XmlPrinter implements Printer {
 	private $root;
 	private $values;
 
-	public function __construct(array $values, string $root = null) {
-		$this->values = $values;
+	public function __construct(string $root = null, array $values = []) {
 		$this->root = $root;
+		$this->values = $values;
 	}
 
 	public function with(string $tag, $value = null): Printer {
 		if($value === null)
-			return new self([$tag => $this->values], $this->root);
-		return new self($this->values + [$tag => $value], $this->root);
+			return new self($this->root, [$tag => $this->values]);
+		return new self($this->root, $this->values + [$tag => $value]);
 	}
 
 	public function __toString(): string {
@@ -29,7 +29,7 @@ final class XmlPrinter implements Printer {
 					$xml .= $this->element(
 						$tag,
 						$this->isArray($this->values[$tag])
-							? new self($this->values[$tag])
+							? new self(null, $this->values[$tag])
 							: $this->toXml((string)$this->values[$tag])
 					);
 					return $xml;
@@ -37,7 +37,7 @@ final class XmlPrinter implements Printer {
 				self::INITIAL_VALUE
 			);
 		}
-		return $this->element($this->root, new self($this->values));
+		return $this->element($this->root, new self(null, $this->values));
 	}
 
 	/**
