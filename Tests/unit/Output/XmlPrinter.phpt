@@ -75,6 +75,26 @@ final class XmlPrinter extends Tester\TestCase {
 				->with('OUTER')
 		);
 	}
+
+	public function testExistingExpression() {
+		$printer = new Output\XmlPrinter('root', ['name' => 'Dominik']);
+		Assert::same(
+			['Dominik'],
+			$printer->valueOf('name')
+		);
+		Assert::same(
+			['Dominik'],
+			$printer->valueOf('//name')
+		);
+	}
+
+	public function testUnknownExpressionWithEmptyMatch() {
+		$printer = new Output\XmlPrinter('root', ['name' => 'Dominik']);
+		Assert::same(
+			[],
+			$printer->valueOf('wtf')
+		);
+	}
 }
 
 (new XmlPrinter())->run();

@@ -6,7 +6,8 @@ namespace Klapuch\Output;
  * Values printed in XML format
  */
 final class XmlPrinter implements Printer {
-	const INITIAL_VALUE = '';
+	const EMPTY_XML = '';
+	const EMPTY_MATCH = [];
 	private $root;
 	private $values;
 
@@ -34,10 +35,24 @@ final class XmlPrinter implements Printer {
 					);
 					return $xml;
 				},
-				self::INITIAL_VALUE
+				self::EMPTY_XML
 			);
 		}
 		return $this->element($this->root, new self(null, $this->values));
+	}
+
+	public function valueOf(string $expression): array {
+		$xml = new \DOMDocument();
+		$xml->loadXML((string)$this);
+		$nodes = (new \DOMXPath($xml))->query($expression);
+		return array_reduce(
+			iterator_to_array($nodes),
+			function($matches, \DOMNode $node) {
+				$matches[] = $node->nodeValue;
+				return $matches;
+			},
+			self::EMPTY_MATCH
+		);
 	}
 
 	/**
