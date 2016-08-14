@@ -21,9 +21,9 @@ final class XsltTemplate extends Tester\TestCase {
 </xsl:template>
 </xsl:stylesheet>'
 		);
-		$data = new \SimpleXMLElement('<root>Data</root>');
+		$data = new \SimpleXMLElement('<root>Příliš žluťoučký kuň</root>');
 		Assert::contains(
-			'<p>Data</p>',
+			'<p>Příliš žluťoučký kuň</p>',
 			(new Output\XsltTemplate($template, $data))->render()
 		);
 	}
