@@ -11,21 +11,21 @@ use Tester\Assert;
 
 require __DIR__ . '/../../bootstrap.php';
 
-final class XmlPrinter extends Tester\TestCase {
-	public function testCorrectlyXmlPrinterFormat() {
+final class Xml extends Tester\TestCase {
+	public function testCorrectlyXmlFormat() {
 		Assert::same(
 			'<root><price>400</price><type>useful</type><escape>&lt;&gt;"&amp;\'</escape></root>',
-			(string)new Output\XmlPrinter(
+			(string)new Output\Xml(
 				'root',
 				['price' => 400, 'type' => 'useful', 'escape' => "<>\"&'"]
 			)
 		);
 	}
 
-	public function testXmlPrinterFormatWithNestedArrays() {
+	public function testXmlFormatWithNestedArrays() {
 		Assert::same(
 			'<root><price>400</price><type>useful</type><lines><id>123</id><name>ABC</name></lines></root>',
-			(string)new Output\XmlPrinter(
+			(string)new Output\Xml(
 				'root',
 				[
 					'price' => 400,
@@ -42,16 +42,16 @@ final class XmlPrinter extends Tester\TestCase {
 	}
 
 	public function testEmptyOutputWithoutError() {
-		Assert::same('<root></root>', (string)new Output\XmlPrinter('root', []));
+		Assert::same('<root></root>', (string)new Output\Xml('root', []));
 	}
 
 	public function testAddingWithoutOverwriting() {
 		Assert::equal(
-			new Output\XmlPrinter(
+			new Output\Xml(
 				'root',
 				['name' => 'Dominik', 'id' => '5']
 			),
-			(new Output\XmlPrinter('root', ['name' => 'Dominik']))
+			(new Output\Xml('root', ['name' => 'Dominik']))
 				->with('id', '5')
 				->with('name', 'foo')
 		);
@@ -60,7 +60,7 @@ final class XmlPrinter extends Tester\TestCase {
 	public function testAddingEmptyNodes() {
 		Assert::same(
 			'<root><AAA><XXX><name>Dominik</name></XXX></AAA></root>',
-			(string)(new Output\XmlPrinter('root', ['name' => 'Dominik']))
+			(string)(new Output\Xml('root', ['name' => 'Dominik']))
 				->with('XXX')
 				->with('AAA')
 		);
@@ -69,7 +69,7 @@ final class XmlPrinter extends Tester\TestCase {
 	public function testAddingArrayNodes() {
 		Assert::same(
 			'<root><OUTER><name>Dominik</name><XXX><xxx_inner><who>xxx</who></xxx_inner></XXX><INNER><who>me</who></INNER></OUTER></root>',
-			(string)(new Output\XmlPrinter('root', ['name' => 'Dominik']))
+			(string)(new Output\Xml('root', ['name' => 'Dominik']))
 				->with('XXX', ['xxx_inner' => ['who' => 'xxx']])
 				->with('INNER', ['who' => 'me'])
 				->with('OUTER')
@@ -77,7 +77,7 @@ final class XmlPrinter extends Tester\TestCase {
 	}
 
 	public function testExistingExpression() {
-		$printer = new Output\XmlPrinter('root', ['name' => 'Dominik']);
+		$printer = new Output\Xml('root', ['name' => 'Dominik']);
 		Assert::same(
 			['Dominik'],
 			$printer->valueOf('name')
@@ -89,7 +89,7 @@ final class XmlPrinter extends Tester\TestCase {
 	}
 
 	public function testUnknownExpressionWithEmptyMatch() {
-		$printer = new Output\XmlPrinter('root', ['name' => 'Dominik']);
+		$printer = new Output\Xml('root', ['name' => 'Dominik']);
 		Assert::same(
 			[],
 			$printer->valueOf('wtf')
@@ -97,4 +97,4 @@ final class XmlPrinter extends Tester\TestCase {
 	}
 }
 
-(new XmlPrinter())->run();
+(new Xml())->run();

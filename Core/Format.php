@@ -2,9 +2,9 @@
 declare(strict_types = 1);
 namespace Klapuch\Output;
 
-interface Printer {
+interface Format {
 	/**
-	 * Add an next element to print
+	 * Add an next element
 	 * @param string $tag
 	 * @param mixed $value
 	 * @return self

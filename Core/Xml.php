@@ -5,7 +5,7 @@ namespace Klapuch\Output;
 /**
  * Values printed in XML format
  */
-final class XmlPrinter implements Printer {
+final class Xml implements Format {
 	const EMPTY_XML = '';
 	const EMPTY_MATCH = [];
 	private $root;
@@ -16,7 +16,7 @@ final class XmlPrinter implements Printer {
 		$this->values = $values;
 	}
 
-	public function with(string $tag, $value = null): Printer {
+	public function with(string $tag, $value = null): Format {
 		if($value === null)
 			return new self($this->root, [$tag => $this->values]);
 		return new self($this->root, $this->values + [$tag => $value]);
