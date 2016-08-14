@@ -8,7 +8,11 @@
       "email": "klapuchdominik@gmail.com"
     }
   ],
-  "require": {},
+  "require": {
+    "ext-dom": "*",
+    "ext-xsl": "*",
+    "ext-simplexml": "*"
+  },
   "require-dev": {
     "nette/tester": "^1.7"
   },
