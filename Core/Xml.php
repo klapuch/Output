@@ -44,9 +44,8 @@ final class Xml implements Format {
 	public function valueOf(string $expression): array {
 		$xml = new \DOMDocument();
 		$xml->loadXML((string)$this);
-		$nodes = (new \DOMXPath($xml))->query($expression);
 		return array_reduce(
-			iterator_to_array($nodes),
+			iterator_to_array((new \DOMXPath($xml))->query($expression)),
 			function($matches, \DOMNode $node) {
 				$matches[] = $node->nodeValue;
 				return $matches;

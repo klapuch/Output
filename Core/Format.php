@@ -4,7 +4,7 @@ namespace Klapuch\Output;
 
 interface Format {
 	/**
-	 * Add an next element
+	 * Prepend/Append next element
 	 * @param string $tag
 	 * @param mixed $value
 	 * @return self
@@ -12,7 +12,7 @@ interface Format {
 	public function with(string $tag, $value = null): self;
 
 	/**
-	 * Print the content
+	 * Print the content in particular format
 	 * @return string
 	 */
 	public function __toString(): string;
