@@ -8,18 +8,18 @@ namespace Klapuch\Output;
 final class Xml implements Format {
 	const EMPTY_XML = '';
 	const EMPTY_MATCH = [];
-	private $root;
 	private $values;
+	private $root;
 
-	public function __construct(string $root = null, array $values = []) {
-		$this->root = $root;
+	public function __construct(array $values, string $root = null) {
 		$this->values = $values;
+		$this->root = $root;
 	}
 
 	public function with(string $tag, $value = null): Format {
 		if($value === null)
-			return new self($this->root, [$tag => $this->values]);
-		return new self($this->root, $this->values + [$tag => $value]);
+			return new self([$tag => $this->values], $this->root);
+		return new self($this->values + [$tag => $value], $this->root);
 	}
 
 	public function __toString(): string {
@@ -30,7 +30,7 @@ final class Xml implements Format {
 					$xml .= $this->element(
 						$tag,
 						$this->isArray($this->values[$tag])
-							? new self(null, $this->values[$tag])
+							? new self($this->values[$tag])
 							: $this->toXml((string)$this->values[$tag])
 					);
 					return $xml;
@@ -38,7 +38,7 @@ final class Xml implements Format {
 				self::EMPTY_XML
 			);
 		}
-		return $this->element($this->root, new self(null, $this->values));
+		return $this->element($this->root, new self($this->values));
 	}
 
 	public function valueOf(string $expression): array {
@@ -69,6 +69,7 @@ final class Xml implements Format {
 
 	/**
 	 * Check if the given value is an array
+	 * Faster version of is_array (because of the recursion)
 	 * @param mixed $value
 	 * @return bool
 	 */
