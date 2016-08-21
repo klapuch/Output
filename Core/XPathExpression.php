@@ -26,6 +26,5 @@ final class XPathExpression implements Expression {
             },
             self::EMPTY_MATCH
         );
-
     }
 }
