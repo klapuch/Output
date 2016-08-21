@@ -65,7 +65,7 @@ final class MergedXml implements Format {
     }
 
     /**
-     * XML string without both elements (starting and closing)
+     * XML string without both elements (starting and ending)
      * @param string $element
      * @param string $xml
      * @return string
