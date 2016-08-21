@@ -1,7 +1,7 @@
 <?php
 /**
  * @testCase
- * @phpVersion > 5.6
+ * @phpVersion > 7.0
  */
 namespace Klapuch\Unit\Output;
 
@@ -73,26 +73,6 @@ final class Xml extends Tester\TestCase {
 				->with('XXX', ['xxx_inner' => ['who' => 'xxx']])
 				->with('INNER', ['who' => 'me'])
 				->with('OUTER')
-		);
-	}
-
-	public function testExistingExpression() {
-		$printer = new Output\Xml(['name' => 'Dominik'], 'root');
-		Assert::same(
-			['Dominik'],
-			$printer->valueOf('name')
-		);
-		Assert::same(
-			['Dominik'],
-			$printer->valueOf('//name')
-		);
-	}
-
-	public function testUnknownExpressionWithEmptyMatch() {
-		$printer = new Output\Xml(['name' => 'Dominik'], 'root');
-		Assert::same(
-			[],
-			$printer->valueOf('wtf')
 		);
 	}
 }

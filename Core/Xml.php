@@ -41,19 +41,6 @@ final class Xml implements Format {
 		return $this->element($this->root, new self($this->values));
 	}
 
-	public function valueOf(string $expression): array {
-		$xml = new \DOMDocument();
-		$xml->loadXML((string)$this);
-		return array_reduce(
-			iterator_to_array((new \DOMXPath($xml))->query($expression)),
-			function($matches, \DOMNode $node) {
-				$matches[] = $node->nodeValue;
-				return $matches;
-			},
-			self::EMPTY_MATCH
-		);
-	}
-
 	/**
 	 * Element with tag and its value
 	 * If the tag is numeric, skip it

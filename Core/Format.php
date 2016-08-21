@@ -16,11 +16,4 @@ interface Format {
 	 * @return string
 	 */
 	public function __toString(): string;
-
-	/**
-	 * Single value by the given expression
-	 * @param string $expression
-	 * @return array
-	 */
-	public function valueOf(string $expression): array;
 }
