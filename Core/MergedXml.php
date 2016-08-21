@@ -51,9 +51,7 @@ final class MergedXml implements Format {
      * @return string
      */
     private function withoutDeclaration(string $xml): string {
-        if(strpos($xml, '<?xml') === 0)
-            return preg_replace('~^.+\n~', '', $xml);
-        return $xml;
+        return preg_replace('~^.+\n~', '', $xml);
     }
 
     /**
