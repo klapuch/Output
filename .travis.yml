@@ -12,6 +12,8 @@ matrix:
           env: coverage="--coverage ./coverage.xml --coverage-src ./Core" PHP_BIN=phpdbg
 
 before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libxml2
   - composer self-update
 
 install:
