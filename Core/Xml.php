@@ -70,6 +70,6 @@ final class Xml implements Format {
      * @return string
      */
     private function toXml(string $value): string {
-        return htmlspecialchars($value, ENT_XML1, 'UTF-8');
+        return htmlspecialchars($value, ENT_QUOTES | ENT_XML1, 'UTF-8');
     }
 }

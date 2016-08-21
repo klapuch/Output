@@ -14,7 +14,7 @@ require __DIR__ . '/../../bootstrap.php';
 final class Xml extends Tester\TestCase {
 	public function testCorrectXmlFormat() {
 		Assert::same(
-			'<root><price>400</price><type>useful</type><escape>&lt;&gt;"&amp;\'</escape></root>',
+			'<root><price>400</price><type>useful</type><escape>&lt;&gt;&quot;&amp;&apos;</escape></root>',
 			(string)new Output\Xml(
 				['price' => 400, 'type' => 'useful', 'escape' => "<>\"&'"],
 				'root'
