@@ -6,17 +6,17 @@ namespace Klapuch\Output;
  * Fake format
  */
 final class FakeFormat implements Format {
-	private $output;
+    private $output;
 
-	public function __construct(string $output) {
-		$this->output = $output;
-	}
+    public function __construct(string $output) {
+        $this->output = $output;
+    }
 
     public function with(string $tag, $value = null): Format {
         return $this;
-	}
+    }
 
-	public function __toString(): string {
+    public function __toString(): string {
         return $this->output;
-	}
+    }
 }

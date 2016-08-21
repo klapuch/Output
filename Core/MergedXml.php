@@ -15,7 +15,7 @@ final class MergedXml implements Format {
     ) {
         $this->root = $root;
         $this->elements = $elements;
-	}
+    }
 
     public function with(string $tag, $value = null): Format {
         $elements = array_merge(
@@ -27,7 +27,7 @@ final class MergedXml implements Format {
             ]
         );
         return new self($this->root, ...$elements);
-	}
+    }
 
     public function __toString(): string {
         $rootElement = simplexml_import_dom($this->root);
@@ -43,7 +43,7 @@ final class MergedXml implements Format {
             );
         }
         return $this->withoutWhiteSpaces($rootElement->saveXML());
-	}
+    }
 
     /**
      * XML string without declaration <?xml ... ?>
@@ -55,7 +55,7 @@ final class MergedXml implements Format {
             return preg_replace('~^.+\n~', '', $xml);
         return $xml;
     }
-    
+
     /**
      * XML string without tabs, spaces, new lines or BOMs
      * @param string $xml
@@ -65,7 +65,7 @@ final class MergedXml implements Format {
         $bom = pack('H*','EFBBBF');
         return preg_replace("~^$bom~", '', trim($xml));
     }
-    
+
     /**
      * XML string without both elements (starting and closing)
      * @param string $element
