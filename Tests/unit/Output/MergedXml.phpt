@@ -71,6 +71,21 @@ final class MergedXml extends Tester\TestCase {
         );
     }
 
+    public function testAddingNewNodeAsPartOfXml() {
+        $root = new \DOMDocument();
+        $root->loadXML('<root></root>');
+        Assert::same(
+            '<?xml version="1.0"?>
+<root><merged>MERGED</merged><another><inner>ANOTHER</inner></another></root>',
+            (string)(new Output\MergedXml(
+                $root,
+                new \SimpleXMLElement('<merged>MERGED</merged>')
+            ))->with('another', '<inner>ANOTHER</inner>')
+        );
+    }
+
+
+
     public function testAddingNewNodeWithEmptyValue() {
         $root = new \DOMDocument();
         $root->loadXML('<root></root>');
