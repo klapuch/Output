@@ -28,6 +28,23 @@ final class MergedXml extends Tester\TestCase {
         );
     }
 
+    public function testMergingWithoutMalformedTags() {
+        $root = new \DOMDocument();
+        $root->loadXML('<root><element>ELEMENT</element></root>');
+        Assert::same(
+            '<?xml version="1.0"?>
+<root><element>ELEMENT</element><merged><inner>INNER</inner></merged><another>ANOTHER</another></root>',
+            trim(
+                new Output\MergedXml(
+                    $root,
+                    new \SimpleXMLElement('<merged><inner>INNER</inner></merged>'),
+                    new \SimpleXMLElement('<another>ANOTHER</another>')
+                )
+            )
+        );
+    }
+
+
     public function testRemovedWhiteSpaces() {
         $root = new \DOMDocument();
         $root->loadXML(pack('H*','EFBBBF') . '<root></root>');

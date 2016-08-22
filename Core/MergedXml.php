@@ -30,19 +30,16 @@ final class MergedXml implements Format {
     }
 
     public function __toString(): string {
-        $rootElement = simplexml_import_dom($this->root);
         foreach($this->elements as $element) {
-            $rootElement->addChild(
-                $element->getName(),
-                $this->withoutElement(
-                    $element->getName(),
-                    $this->withoutDeclaration(
-                        $this->withoutWhiteSpaces($element->saveXML())
-                    )
+            $fragment = $this->root->createDocumentFragment();     
+            $fragment->appendXML(
+                $this->withoutDeclaration(
+                    $this->withoutWhiteSpaces($element->saveXML())
                 )
             );
+            $this->root->documentElement->appendChild($fragment);
         }
-        return $this->withoutWhiteSpaces($rootElement->saveXML());
+        return $this->withoutWhiteSpaces($this->root->saveXML());
     }
 
     /**
@@ -62,20 +59,5 @@ final class MergedXml implements Format {
     private function withoutWhiteSpaces(string $xml): string {
         $bom = pack('H*','EFBBBF');
         return preg_replace("~^$bom~", '', trim($xml));
-    }
-
-    /**
-     * XML string without both elements (starting and ending)
-     * @param string $element
-     * @param string $xml
-     * @return string
-     */
-    private function withoutElement(string $element, string $xml): string {
-        if(strpos($xml, sprintf('<%s/>', $element)) !== false)
-            return str_replace(sprintf('<%s/>', $element), '', $xml);
-        return substr(
-            substr($xml, 0, (strlen($element) + 3) * -1),
-            strlen($element) + 2
-        );
     }
 }
