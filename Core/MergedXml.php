@@ -17,16 +17,18 @@ final class MergedXml implements Format {
         $this->elements = $elements;
     }
 
-    public function with(string $tag, $value = null): Format {
-        $elements = array_merge(
-            $this->elements,
-            [
-                new \SimpleXMLElement(
-                    sprintf('<%1$s>%2$s</%1$s>', $tag, $value)
-                )
-            ]
+    public function with(string $tag, $content = null): Format {
+        return new self(
+            $this->root,
+            ...array_merge(
+                $this->elements,
+                [
+                    new \SimpleXMLElement(
+                        sprintf('<%1$s>%2$s</%1$s>', $tag, $content)
+                    )
+                ]
+            )
         );
-        return new self($this->root, ...$elements);
     }
 
     public function __toString(): string {
@@ -34,12 +36,12 @@ final class MergedXml implements Format {
             $fragment = $this->root->createDocumentFragment();     
             $fragment->appendXML(
                 $this->withoutDeclaration(
-                    $this->withoutWhiteSpaces($element->saveXML())
+                    $this->withoutTrailingSpaces($element->saveXML())
                 )
             );
             $this->root->documentElement->appendChild($fragment);
         }
-        return $this->withoutWhiteSpaces($this->root->saveXML());
+        return $this->withoutTrailingSpaces($this->root->saveXML());
     }
 
     /**
@@ -48,15 +50,15 @@ final class MergedXml implements Format {
      * @return string
      */
     private function withoutDeclaration(string $xml): string {
-        return preg_replace('~^.+\n~', '', $xml);
+        return substr($xml, strpos($xml, '?>') + 2);
     }
 
     /**
-     * XML string without tabs, spaces, new lines or BOMs
+     * XML string without trailing tabs, spaces, new lines or BOMs
      * @param string $xml
      * @return string
      */
-    private function withoutWhiteSpaces(string $xml): string {
+    private function withoutTrailingSpaces(string $xml): string {
         $bom = pack('H*','EFBBBF');
         return preg_replace("~^$bom~", '', trim($xml));
     }

@@ -6,10 +6,10 @@ interface Format {
     /**
      * Prepend/Append next element
      * @param string $tag
-     * @param mixed $value
+     * @param string|array $content
      * @return Format
      */
-    public function with(string $tag, $value = null): self;
+    public function with(string $tag, $content = null): self;
 
     /**
      * Print the content in particular format

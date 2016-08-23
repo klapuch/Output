@@ -16,10 +16,10 @@ final class Xml implements Format {
         $this->root = $root;
     }
 
-    public function with(string $tag, $value = null): Format {
-        if($value === null)
+    public function with(string $tag, $content = null): Format {
+        if($content === null)
             return new self([$tag => $this->values], $this->root);
-        return new self($this->values + [$tag => $value], $this->root);
+        return new self($this->values + [$tag => $content], $this->root);
     }
 
     public function __toString(): string {
@@ -45,31 +45,31 @@ final class Xml implements Format {
      * Element with tag and its value
      * If the tag is numeric, skip it
      * @param string $tag
-     * @param string|self $value
+     * @param string|self $content
      * @return string
      */
-    private function element(string $tag, $value) {
+    private function element(string $tag, $content) {
         if(is_numeric($tag))
-            return $value;
-        return sprintf('<%1$s>%2$s</%1$s>', $tag, $value);
+            return $content;
+        return sprintf('<%1$s>%2$s</%1$s>', $tag, $content);
     }
 
     /**
      * Check if the given value is an array
      * Faster version of is_array (because of the recursion)
-     * @param mixed $value
+     * @param mixed $content
      * @return bool
      */
-    private function isArray($value): bool {
-        return (array)$value === $value;
+    private function isArray($content): bool {
+        return (array)$content === $content;
     }
 
     /**
      * Value satisfying XML standards
-     * @param string $value
+     * @param string $content
      * @return string
      */
-    private function toXml(string $value): string {
-        return htmlspecialchars($value, ENT_QUOTES | ENT_XML1, 'UTF-8');
+    private function toXml(string $content): string {
+        return htmlspecialchars($content, ENT_QUOTES | ENT_XML1, 'UTF-8');
     }
 }
