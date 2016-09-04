@@ -53,6 +53,30 @@ final class XsltTemplate extends Tester\TestCase {
             ))->render())
 		);
     }
+
+    public function testOutputWithVariables() {
+		$template = Tester\FileMock::create(
+            '<?xml version="1.0" encoding="UTF-8"?>
+            <xsl:stylesheet version="1.0" 
+                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="html" encoding="utf-8"/>
+                <xsl:template match="/">
+                    <p><xsl:value-of select="$first"/></p>
+                    <p><xsl:value-of select="$second"/></p>
+                </xsl:template>
+            </xsl:stylesheet>'
+		);
+		Assert::contains(
+			'<p>První</p><p>Druhý</p>',
+            trim((new Output\XsltTemplate(
+                $template,
+                new Output\FakeFormat(
+                    '<?xml version="1.0"?><root/>'
+                )
+            ))->render(['first' => 'První', 'second' => 'Druhý']))
+		);
+    }
+
 }
 
 (new XsltTemplate())->run();

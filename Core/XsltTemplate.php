@@ -11,10 +11,11 @@ final class XsltTemplate implements Template {
         $this->data = $data;
     }
 
-    public function render(): string {
+    public function render(array $variables = []): string {
         $xsl = new \DOMDocument();
         $xsl->load($this->template);
         $xslt = new \XSLTProcessor();
+        $xslt->setParameter('', $variables);
         $xslt->importStylesheet($xsl);
         $xml = new \DOMDocument();
         $xml->loadXml((string)$this->data);
