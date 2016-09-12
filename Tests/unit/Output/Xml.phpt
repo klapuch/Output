@@ -43,7 +43,15 @@ final class Xml extends Tester\TestCase {
 
 	public function testEmptyOutputWithoutError() {
 		Assert::same('<root></root>', (string)new Output\Xml([], 'root'));
+    }
+
+    public function testAppendingToEmptyXML() {
+        Assert::same(
+            '<root><simple>SIMPLE</simple></root>',
+            (string)(new Output\Xml([], 'root'))->with('simple', 'SIMPLE')
+        );
 	}
+
 
 	public function testAddingWithoutOverwriting() {
 		Assert::equal(
