@@ -9,7 +9,7 @@ env:
 matrix:
     include:
         - php: 7.0
-          env: coverage="--coverage ./coverage.xml --coverage-src ./App" PHP_BIN=php-cgi
+          env: coverage="--coverage ./coverage.xml --coverage-src ./Core" PHP_BIN=php-cgi
 
 before_install:
   - composer self-update
