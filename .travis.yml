@@ -1,37 +1,35 @@
 language: php
 
 php:
-  - 7.0
+    - 7.0
 
 env:
-  - PHP_BIN="php-cgi"
+    - PHP_BIN="php-cgi"
 
 matrix:
     include:
         - php: 7.0
-          env: coverage="--coverage ./coverage.xml --coverage-src ./Core" PHP_BIN=phpdbg
+          env: coverage="--coverage ./coverage.xml --coverage-src ./App" PHP_BIN=php-cgi
 
-before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y libxml2
-  - composer self-update
+          before_install:
+              - composer self-update
 
-install:
-  - composer install --no-interaction --prefer-source
+          install:
+              - composer install --no-interaction --prefer-source
 
-after_script:
-    - >
-      if [ "$coverage" != "" ]; then
-      wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
-      && php coveralls.phar --verbose --config Tests/.coveralls.yml
-      || true; fi
+          after_script:
+              - >
+                  if [ "$coverage" != "" ]; then
+                  wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
+                  && php coveralls.phar --verbose --config Tests/.coveralls.yml
+                  || true; fi
 
-script:
-  - ./vendor/bin/tester -p $PHP_BIN -d extension=xdebug.so -o console -s $coverage ./Tests/
+          script:
+              - ./vendor/bin/tester -p $PHP_BIN -d extension=xdebug.so -o console -s $coverage ./Tests/
 
-after_failure:
-  - for i in $(find Tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
+          after_failure:
+              - for i in $(find Tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
 
-cache:
-    directories:
-      - $HOME/.composer/cache
+          cache:
+              directories:
+                  - $HOME/.composer/cache
