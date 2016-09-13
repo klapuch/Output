@@ -9,7 +9,7 @@ env:
 matrix:
     include:
         - php: 7.0
-          env: coverage="--coverage ./coverage.xml --coverage-src ./Core" $PHP_BIN
+          env: coverage="--coverage ./coverage.xml --coverage-src ./Core" PHP_BIN=phpdbg
 
 before_install:
   - sudo apt-get -qq update
