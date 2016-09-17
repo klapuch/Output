@@ -13,7 +13,7 @@ final class FakeFormat implements Format {
     }
 
     public function with(string $tag, $value = null): Format {
-        return $this;
+        return new self($this . "|$tag|$value|");
     }
 
     public function __toString(): string {
