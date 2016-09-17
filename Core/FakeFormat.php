@@ -8,7 +8,7 @@ namespace Klapuch\Output;
 final class FakeFormat implements Format {
     private $output;
 
-    public function __construct(string $output) {
+    public function __construct(string $output = '') {
         $this->output = $output;
     }
 
