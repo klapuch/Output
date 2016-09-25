@@ -3,7 +3,7 @@ declare(strict_types = 1);
 namespace Klapuch\Output;
 
 /**
- * Wrapped whole XML by tag
+ * Wrapped whole XML to particular tag
  */
 final class WrappedXml implements Format {
     const EMPTY_XML = '';
@@ -33,7 +33,7 @@ final class WrappedXml implements Format {
             array_reduce(
                 $this->formats,
                 function(string $wrapped, Format $format) {
-                    $wrapped .= (string)$format;
+                    $wrapped .= $format;
                     return $wrapped;
                 },
                 self::EMPTY_XML

@@ -93,9 +93,7 @@ final class MergedXml extends Tester\TestCase {
         );
     }
 
-
-
-    public function testAddingNewNodeWithEmptyValue() {
+    public function testAddingNewNodeWithoutContent() {
         $root = new \DOMDocument();
         $root->loadXML('<root></root>');
         Assert::same(

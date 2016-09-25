@@ -3,7 +3,7 @@ declare(strict_types = 1);
 namespace Klapuch\Output;
 
 /**
- * Merged multiple XML files into one
+ * Merged multiple XML elements into one
  */
 final class MergedXml implements Format {
     private $root;

@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../../bootstrap.php';
 
 final class Xml extends Tester\TestCase {
-	public function testCorrectXmlFormat() {
+	public function testXmlFormat() {
 		Assert::same(
 			'<root><price>400</price><type>useful</type><escape>&lt;&gt;&quot;&amp;&apos;</escape></root>',
 			(string)new Output\Xml(
@@ -41,19 +41,18 @@ final class Xml extends Tester\TestCase {
 		);
 	}
 
-	public function testEmptyOutputWithoutError() {
+	public function testEmptyOutputWithoutFail() {
 		Assert::same('<root></root>', (string)new Output\Xml([], 'root'));
     }
 
-    public function testAppendingToEmptyXML() {
+    public function testAppendingToEmptyXml() {
         Assert::same(
             '<root><simple>SIMPLE</simple></root>',
             (string)(new Output\Xml([], 'root'))->with('simple', 'SIMPLE')
         );
 	}
 
-
-	public function testAddingWithoutOverwriting() {
+	public function testAddingNodesWithoutOverwriting() {
 		Assert::equal(
 			new Output\Xml(
 				['name' => 'Dominik', 'id' => '5'],
@@ -65,7 +64,7 @@ final class Xml extends Tester\TestCase {
 		);
 	}
 
-	public function testAddingEmptyNodes() {
+	public function testAddingNodesWithoutContent() {
 		Assert::same(
 			'<root><AAA><XXX><name>Dominik</name></XXX></AAA></root>',
 			(string)(new Output\Xml(['name' => 'Dominik'], 'root'))

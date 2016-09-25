@@ -25,10 +25,9 @@ final class XPathExpression extends Tester\TestCase {
                 '//name',
                 new Output\FakeFormat('<root><name>Dominik</name></root>')
             ))->matches());
-
     }
 
-    public function testUnknownExpressionWithEmptyMatch() {
+    public function testUnknownExpressionWithoutMatch() {
         Assert::same(
             [],
             (new Output\XPathExpression(

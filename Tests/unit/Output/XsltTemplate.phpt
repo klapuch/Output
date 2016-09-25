@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../../bootstrap.php';
 
 final class XsltTemplate extends Tester\TestCase {
-	public function testOutputOfExistingTemplateWithValidData() {
+	public function testRendering() {
 		$template = Tester\FileMock::create(
             '<?xml version="1.0" encoding="UTF-8"?>
             <xsl:stylesheet version="1.0" 
@@ -32,7 +32,7 @@ final class XsltTemplate extends Tester\TestCase {
 		);
     }
 
-    public function testOutputOfExistingTemplateWithExtraXMLDeclaration() {
+    public function testRenderingWitouhtExtraXmlDeclaration() {
 		$template = Tester\FileMock::create(
             '<?xml version="1.0" encoding="UTF-8"?>
             <xsl:stylesheet version="1.0" 
@@ -54,7 +54,7 @@ final class XsltTemplate extends Tester\TestCase {
 		);
     }
 
-    public function testOutputWithVariables() {
+    public function testRenderingWithVariables() {
 		$template = Tester\FileMock::create(
             '<?xml version="1.0" encoding="UTF-8"?>
             <xsl:stylesheet version="1.0" 
@@ -76,7 +76,6 @@ final class XsltTemplate extends Tester\TestCase {
             ))->render(['first' => 'První', 'second' => 'Druhý']))
 		);
     }
-
 }
 
 (new XsltTemplate())->run();

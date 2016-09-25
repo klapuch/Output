@@ -23,7 +23,7 @@ final class WrappedXml extends Tester\TestCase {
         );
     }
 
-    public function testWithAppliedOnEveryElement() {
+    public function testWrappingAppliedOnEveryElement() {
         Assert::same(
             '<root><a>A</a>|x|X|<b>B</b>|x|X|</root>',
             (string)(new Output\WrappedXml(
@@ -33,7 +33,6 @@ final class WrappedXml extends Tester\TestCase {
             ))->with('x', 'X')
         );
     }
-
 }
 
 (new WrappedXml())->run();

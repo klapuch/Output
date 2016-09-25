@@ -4,11 +4,11 @@ namespace Klapuch\Output;
 
 final class XsltTemplate implements Template {
     private $template;
-    private $data;
+    private $stylesheet;
 
-    public function __construct(string $template, Format $data) {
+    public function __construct(string $template, Format $stylesheet) {
         $this->template = $template;
-        $this->data = $data;
+        $this->stylesheet = $stylesheet;
     }
 
     public function render(array $variables = []): string {
@@ -18,7 +18,7 @@ final class XsltTemplate implements Template {
         $xslt->setParameter('', $variables);
         $xslt->importStylesheet($xsl);
         $xml = new \DOMDocument();
-        $xml->loadXml((string)$this->data);
+        $xml->loadXml((string)$this->stylesheet);
         return $xslt->transformToXml($xml);
     }
 }
