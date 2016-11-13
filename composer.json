@@ -1,27 +1,30 @@
 {
-    "name": "klapuch/output",
-    "description": "printers, output, xml, json",
-    "type": "library",
-    "authors": [
-        {
-            "name": "Dominik Klapuch",
-            "email": "klapuchdominik@gmail.com"
-        }
-    ],
-    "require": {
-        "ext-dom": "*",
-        "ext-xsl": "*",
-        "ext-simplexml": "*"
-    },
-    "require-dev": {
-        "nette/tester": "^1.7"
-    },
-    "config": {
-        "optimize-autoloader": true
-    },
-    "autoload": {
-        "psr-4": {
-            "Klapuch\\": ["Core/"]
-        }
-    }
+  "name": "klapuch/output",
+  "description": "printers, output, xml, json",
+  "homepage": "https://github.com/klapuch/Output",
+  "type": "library",
+  "authors": [
+	{
+	  "name": "Dominik Klapuch",
+	  "email": "klapuchdominik@gmail.com",
+	  "homepage": "https://www.github.com/klapuch",
+	  "role": "Developer"
+	}
+  ],
+  "require": {
+	"php": ">=7.0",
+	"ext-dom": "*",
+	"ext-xsl": "*",
+	"ext-simplexml": "*"
+  },
+  "require-dev": {
+	"nette/tester": "^1.7"
+  },
+  "autoload": {
+	"psr-4": {
+	  "Klapuch\\Output\\": [
+		"Core/"
+	  ]
+	}
+  }
 }
