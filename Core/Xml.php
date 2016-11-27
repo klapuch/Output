@@ -29,7 +29,7 @@ final class Xml implements Format {
                 function(string $xml, string $tag): string {
                     $xml .= $this->element(
                         $tag,
-                        $this->isArray($this->values[$tag])
+                        $this->isParent($this->values[$tag])
                         ? new self($this->values[$tag])
                         : $this->toXml((string)$this->values[$tag])
                     );
@@ -43,25 +43,25 @@ final class Xml implements Format {
 
     /**
      * Element with tag and its value
-     * If the tag is numeric, skip it
+     * If the tag is numeric, skip it as it is not allowed
      * @param string $tag
      * @param string|self $content
      * @return string
      */
     private function element(string $tag, $content) {
-        if(is_numeric($tag))
-            return $content;
-        return sprintf('<%1$s>%2$s</%1$s>', $tag, $content);
+        return is_numeric($tag)
+            ? $content
+            : sprintf('<%1$s>%2$s</%1$s>', $tag, $content);
     }
 
     /**
-     * Check if the given value is an array
+     * Check if the given element is parent of childrens
      * Faster version of is_array (because of the recursion)
      * @param mixed $content
      * @return bool
      */
-    private function isArray($content): bool {
-        return (array)$content === $content;
+    private function isParent($element): bool {
+        return (array)$element === $element;
     }
 
     /**
