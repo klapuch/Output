@@ -3,7 +3,7 @@ declare(strict_types = 1);
 namespace Klapuch\Output;
 
 /**
- * Wrapped whole XML to particular tag
+ * Wrapped whole XML into particular tag
  */
 final class WrappedXml implements Format {
     const EMPTY_XML = '';
