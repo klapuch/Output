@@ -43,13 +43,13 @@ final class Xml extends Tester\TestCase {
 
 	public function testEmptyOutputWithoutFail() {
 		Assert::same('<root></root>', (string)new Output\Xml([], 'root'));
-    }
+	}
 
-    public function testAppendingToEmptyXml() {
-        Assert::same(
-            '<root><simple>SIMPLE</simple></root>',
-            (string)(new Output\Xml([], 'root'))->with('simple', 'SIMPLE')
-        );
+	public function testAppendingToEmptyXml() {
+		Assert::same(
+			'<root><simple>SIMPLE</simple></root>',
+			(string)(new Output\Xml([], 'root'))->with('simple', 'SIMPLE')
+		);
 	}
 
 	public function testAddingNodesWithoutOverwriting() {
@@ -59,8 +59,8 @@ final class Xml extends Tester\TestCase {
 				'root'
 			),
 			(new Output\Xml(['name' => 'Dominik'], 'root'))
-				->with('id', '5')
-				->with('name', 'foo')
+			->with('id', '5')
+			->with('name', 'foo')
 		);
 	}
 
@@ -68,8 +68,8 @@ final class Xml extends Tester\TestCase {
 		Assert::same(
 			'<root><AAA><XXX><name>Dominik</name></XXX></AAA></root>',
 			(string)(new Output\Xml(['name' => 'Dominik'], 'root'))
-				->with('XXX')
-				->with('AAA')
+			->with('XXX')
+			->with('AAA')
 		);
 	}
 
@@ -77,9 +77,9 @@ final class Xml extends Tester\TestCase {
 		Assert::same(
 			'<root><OUTER><name>Dominik</name><XXX><xxx_inner><who>xxx</who></xxx_inner></XXX><INNER><who>me</who></INNER></OUTER></root>',
 			(string)(new Output\Xml(['name' => 'Dominik'], 'root'))
-				->with('XXX', ['xxx_inner' => ['who' => 'xxx']])
-				->with('INNER', ['who' => 'me'])
-				->with('OUTER')
+			->with('XXX', ['xxx_inner' => ['who' => 'xxx']])
+			->with('INNER', ['who' => 'me'])
+			->with('OUTER')
 		);
 	}
 }
