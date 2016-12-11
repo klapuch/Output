@@ -18,13 +18,9 @@ final class WrappedXml implements Format {
 	public function with(string $tag, $content = null): Format {
 		return new self(
 			$this->wrap,
-			...array_reduce(
-				$this->formats,
-				function($formats, Format $format) use($tag, $content) {
-					$formats[] = $format->with($tag, $content);
-					return $formats;
-				}
-		)
+			...array_map(function(Format $format) use($tag, $content): Format {
+				return $format->with($tag, $content);
+			}, $this->formats)
 		);
 	}
 
@@ -32,7 +28,7 @@ final class WrappedXml implements Format {
 		return $this->wrap(
 			array_reduce(
 				$this->formats,
-				function(string $wrapped, Format $format) {
+				function(string $wrapped, Format $format): string {
 					$wrapped .= $format;
 					return $wrapped;
 				},

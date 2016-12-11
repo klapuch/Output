@@ -6,7 +6,6 @@ namespace Klapuch\Output;
  * Expression evaluated as a XPath
  */
 final class XPathExpression implements Expression {
-	const EMPTY_MATCH = [];
 	private $expression;
 	private $format;
 
@@ -18,13 +17,8 @@ final class XPathExpression implements Expression {
 	public function matches(): array {
 		$xml = new \DOMDocument();
 		$xml->loadXML((string)$this->format);
-		return array_reduce(
-			iterator_to_array((new \DOMXPath($xml))->query($this->expression)),
-			function($matches, \DOMNode $node) {
-				$matches[] = $node->nodeValue;
-				return $matches;
-			},
-			self::EMPTY_MATCH
-		);
+		return array_map(function(\DOMNode $node): string {
+			return $node->nodeValue;
+		}, iterator_to_array((new \DOMXPath($xml))->query($this->expression)));
 	}
 }

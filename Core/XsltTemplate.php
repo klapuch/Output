@@ -2,6 +2,9 @@
 declare(strict_types = 1);
 namespace Klapuch\Output;
 
+/**
+ * XSLT template
+ */
 final class XsltTemplate implements Template {
 	private $template;
 	private $stylesheet;

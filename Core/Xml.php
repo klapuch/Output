@@ -61,7 +61,7 @@ final class Xml implements Format {
 	 * @return bool
 	 */
 	private function isParent($element): bool {
-		return (array)$element === $element;
+		return $element === (array)$element;
 	}
 
 	/**
