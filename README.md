@@ -1,2 +1,2 @@
 # Output
-[![Build Status](https://travis-ci.org/klapuch/Output.svg?branch=master)](https://travis-ci.org/klapuch/Output) [![Coverage Status](https://coveralls.io/repos/github/klapuch/Output/badge.svg?branch=master)](https://coveralls.io/github/klapuch/Output?branch=master)
+[![Build Status](https://travis-ci.org/klapuch/Output.svg?branch=master)](https://travis-ci.org/klapuch/Output) [![Build status](https://ci.appveyor.com/api/projects/status/ciwaxsuen5c4hnhv?svg=true)](https://ci.appveyor.com/project/facedown/output) [![Coverage Status](https://coveralls.io/repos/github/klapuch/Output/badge.svg?branch=master)](https://coveralls.io/github/klapuch/Output?branch=master)
