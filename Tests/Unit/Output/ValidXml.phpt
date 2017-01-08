@@ -13,8 +13,8 @@ require __DIR__ . '/../../bootstrap.php';
 
 final class ValidXml extends Tester\TestCase {
 	public function testValidXmlAgainstSchema() {
-		$xml = '<?xml version="1.0" encoding="utf-8"?>' . PHP_EOL;
-		$xml .= '<root><name>Dominik Klapuch</name></root>' . PHP_EOL;
+		$xml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
+		$xml .= '<root><name>Dominik Klapuch</name></root>' . "\n";
 		$xsd = '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 		  <xs:element name="root">
 			<xs:complexType>
