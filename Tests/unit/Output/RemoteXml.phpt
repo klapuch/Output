@@ -12,41 +12,41 @@ use Tester\Assert;
 require __DIR__ . '/../../bootstrap.php';
 
 final class RemoteXml extends Tester\TestCase {
-	public function testXmlFromExistingSource() {
+	public function testLoadingFromExistingSource() {
 		Assert::contains(
 			'<root><content>a</content></root>',
-			(string)new Output\RemoteXml(
+			(new Output\RemoteXml(
 				Tester\FileMock::create('<root><content>a</content></root>')
-			)
+			))->serialization()
 		);
 	}
 
 	public function testCorrectEncoding() {
 		Assert::contains(
 			'<root>Příliš žluťoučký kůň úpěl ďábelské ódy.</root>',
-			(string)new Output\RemoteXml(
+			(new Output\RemoteXml(
 				Tester\FileMock::create(
 					'<root>Příliš žluťoučký kůň úpěl ďábelské ódy.</root>'
 				)
-			)
+			))->serialization()
 		);
 	}
 
-	public function testAddingNewNode() {
+	public function testAddingNewSimpleNode() {
 		Assert::contains(
 			'<outer>OUTER</outer>',
-			(string)(new Output\RemoteXml(
+			(new Output\RemoteXml(
 				Tester\FileMock::create('<root><content>a</content></root>')
-			))->with('outer', 'OUTER')
+			))->with('outer', 'OUTER')->serialization()
 		);
 	}
 
-	public function testAddingNewNodeWithoutContent() {
+	public function testAddingNewEmptyNode() {
 		Assert::contains(
 			'<outer/>',
-			(string)(new Output\RemoteXml(
+			(new Output\RemoteXml(
 				Tester\FileMock::create('<root><content>a</content></root>')
-			))->with('outer')
+			))->with('outer')->serialization()
 		);
 	}
 }

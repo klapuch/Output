@@ -12,25 +12,25 @@ use Tester\Assert;
 require __DIR__ . '/../../bootstrap.php';
 
 final class WrappedXml extends Tester\TestCase {
-	public function testWrappingEverything() {
+	public function testWrappingEverythingAtOnce() {
 		Assert::same(
 			'<root><a>A</a><b>B</b></root>',
-			(string)new Output\WrappedXml(
+			(new Output\WrappedXml(
 				'root',
 				new Output\FakeFormat('<a>A</a>'),
 				new Output\FakeFormat('<b>B</b>')
-			)
+			))->serialization()
 		);
 	}
 
 	public function testWrappingAppliedOnEveryElement() {
 		Assert::same(
 			'<root><a>A</a>|x|X|<b>B</b>|x|X|</root>',
-			(string)(new Output\WrappedXml(
+			(new Output\WrappedXml(
 				'root',
 				new Output\FakeFormat('<a>A</a>'),
 				new Output\FakeFormat('<b>B</b>')
-			))->with('x', 'X')
+			))->with('x', 'X')->serialization()
 		);
 	}
 }

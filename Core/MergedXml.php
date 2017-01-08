@@ -31,7 +31,7 @@ final class MergedXml implements Format {
 		);
 	}
 
-	public function __toString(): string {
+	public function serialization(): string {
 		foreach($this->elements as $element) {
 			$fragment = $this->root->createDocumentFragment();     
 			$fragment->appendXML(

@@ -21,16 +21,16 @@ final class MergedXml extends Tester\TestCase {
 <merged>MERGED</merged>
 <another>ANOTHER</another></root>',
 			trim(
-				new Output\MergedXml(
+				(new Output\MergedXml(
 					$root,
 					new \SimpleXMLElement('<merged>MERGED</merged>'),
 					new \SimpleXMLElement('<another>ANOTHER</another>')
-				)
+				))->serialization()
 			)
 		);
 	}
 
-	public function testMergingWithoutMalformedTags() {
+	public function testMergingWithoutMalformingTags() {
 		$root = new \DOMDocument();
 		$root->loadXML('<root><element>ELEMENT</element></root>');
 		Assert::same(
@@ -39,31 +39,30 @@ final class MergedXml extends Tester\TestCase {
 <merged><inner>INNER</inner></merged>
 <another>ANOTHER</another></root>',
 			trim(
-				new Output\MergedXml(
+				(new Output\MergedXml(
 					$root,
 					new \SimpleXMLElement('<merged><inner>INNER</inner></merged>'),
 					new \SimpleXMLElement('<another>ANOTHER</another>')
-				)
+				))->serialization()
 			)
 		);
 	}
 
-
-	public function testRemovedWhiteSpaces() {
+	public function testRemovingWhiteSpaces() {
 		$root = new \DOMDocument();
 		$root->loadXML(pack('H*','EFBBBF') . '<root></root>');
 		Assert::same(
 			'<?xml version="1.0"?>
 <root>
 <merged>MERGED</merged></root>',
-			(string)new Output\MergedXml(
+			(new Output\MergedXml(
 				$root,
 				new \SimpleXMLElement('<merged>MERGED</merged>     ')
-			)
+			))->serialization()
 		);
 	}
 
-	public function testAddingNewNode() {
+	public function testAddingNewSimpleNode() {
 		$root = new \DOMDocument();
 		$root->loadXML('<root></root>');
 		Assert::same(
@@ -71,14 +70,14 @@ final class MergedXml extends Tester\TestCase {
 <root>
 <merged>MERGED</merged>
 <another>ANOTHER</another></root>',
-			(string)(new Output\MergedXml(
+			(new Output\MergedXml(
 				$root,
 				new \SimpleXMLElement('<merged>MERGED</merged>')
-			))->with('another', 'ANOTHER')
+			))->with('another', 'ANOTHER')->serialization()
 		);
 	}
 
-	public function testAddingNewNodeAsPartOfXml() {
+	public function testAddingNewXmlNode() {
 		$root = new \DOMDocument();
 		$root->loadXML('<root></root>');
 		Assert::same(
@@ -86,14 +85,14 @@ final class MergedXml extends Tester\TestCase {
 <root>
 <merged>MERGED</merged>
 <another><inner>ANOTHER</inner></another></root>',
-			(string)(new Output\MergedXml(
+			(new Output\MergedXml(
 				$root,
 				new \SimpleXMLElement('<merged>MERGED</merged>')
-			))->with('another', '<inner>ANOTHER</inner>')
+			))->with('another', '<inner>ANOTHER</inner>')->serialization()
 		);
 	}
 
-	public function testAddingNewNodeWithoutContent() {
+	public function testAddingNewEmptyNode() {
 		$root = new \DOMDocument();
 		$root->loadXML('<root></root>');
 		Assert::same(
@@ -101,10 +100,10 @@ final class MergedXml extends Tester\TestCase {
 <root>
 <merged>MERGED</merged>
 <another/></root>',
-			(string)(new Output\MergedXml(
+			(new Output\MergedXml(
 				$root,
 				new \SimpleXMLElement('<merged>MERGED</merged>')
-			))->with('another')
+			))->with('another')->serialization()
 		);
 	}
 }
