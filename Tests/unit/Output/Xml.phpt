@@ -18,7 +18,7 @@ final class Xml extends Tester\TestCase {
 			(new Output\Xml(
 				['price' => 400, 'type' => 'useful', 'escape' => "<>\"&'"],
 				'root'
-			))->serialization()
+			))->serialize()
 		);
 	}
 
@@ -37,18 +37,18 @@ final class Xml extends Tester\TestCase {
 					],
 				],
 				'root'
-			))->serialization()
+			))->serialize()
 		);
 	}
 
 	public function testEmptyInputWithoutFail() {
-		Assert::same('<root></root>', (new Output\Xml([], 'root'))->serialization());
+		Assert::same('<root></root>', (new Output\Xml([], 'root'))->serialize());
 	}
 
 	public function testAppendingToEmptyXml() {
 		Assert::same(
 			'<root><simple>SIMPLE</simple></root>',
-			(new Output\Xml([], 'root'))->with('simple', 'SIMPLE')->serialization()
+			(new Output\Xml([], 'root'))->with('simple', 'SIMPLE')->serialize()
 		);
 	}
 
@@ -57,11 +57,11 @@ final class Xml extends Tester\TestCase {
 			(new Output\Xml(
 				['name' => 'Dominik', 'id' => '5'],
 				'root'
-			))->serialization(),
+			))->serialize(),
 			(new Output\Xml(['name' => 'Dominik'], 'root'))
 			->with('id', '5')
 			->with('name', 'foo')
-			->serialization()
+			->serialize()
 		);
 	}
 
@@ -71,7 +71,7 @@ final class Xml extends Tester\TestCase {
 			(new Output\Xml(['name' => 'Dominik'], 'root'))
 			->with('XXX')
 			->with('AAA')
-			->serialization()
+			->serialize()
 		);
 	}
 
@@ -82,7 +82,7 @@ final class Xml extends Tester\TestCase {
 			->with('XXX', ['xxx_inner' => ['who' => 'xxx']])
 			->with('INNER', ['who' => 'me'])
 			->with('OUTER')
-			->serialization()
+			->serialize()
 		);
 	}
 }

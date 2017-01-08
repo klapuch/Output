@@ -21,7 +21,7 @@ final class RemoteXml implements Format {
 		);
 	}
 
-	public function serialization(): string {
+	public function serialize(): string {
 		$dom = $this->toDOM($this->source);
 		return $dom->saveXML($dom->documentElement);
 	}

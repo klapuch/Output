@@ -24,12 +24,12 @@ final class WrappedXml implements Format {
 		);
 	}
 
-	public function serialization(): string {
+	public function serialize(): string {
 		return $this->wrap(
 			array_reduce(
 				$this->formats,
 				function(string $wrapped, Format $format): string {
-					$wrapped .= $format->serialization();
+					$wrapped .= $format->serialize();
 					return $wrapped;
 				},
 				self::EMPTY_XML

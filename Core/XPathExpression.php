@@ -16,7 +16,7 @@ final class XPathExpression implements Expression {
 
 	public function matches(): array {
 		$xml = new \DOMDocument();
-		$xml->loadXML($this->format->serialization());
+		$xml->loadXML($this->format->serialize());
 		return array_map(function(\DOMNode $node): string {
 			return $node->nodeValue;
 		}, iterator_to_array((new \DOMXPath($xml))->query($this->expression)));

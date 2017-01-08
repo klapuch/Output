@@ -22,7 +22,7 @@ final class Xml implements Format {
 		return new self($this->values + [$tag => $content], $this->root);
 	}
 
-	public function serialization(): string {
+	public function serialize(): string {
 		if($this->root === null) {
 			return array_reduce(
 				array_keys($this->values),
@@ -30,7 +30,7 @@ final class Xml implements Format {
 					$xml .= $this->element(
 						$tag,
 						$this->isParent($this->values[$tag])
-						? (new self($this->values[$tag]))->serialization()
+						? (new self($this->values[$tag]))->serialize()
 						: $this->toXml((string)$this->values[$tag])
 					);
 					return $xml;
@@ -40,7 +40,7 @@ final class Xml implements Format {
 		}
 		return $this->element(
 			$this->root,
-			(new self($this->values))->serialization()
+			(new self($this->values))->serialize()
 		);
 	}
 

@@ -13,10 +13,10 @@ final class FakeFormat implements Format {
 	}
 
 	public function with(string $tag, $value = null): Format {
-		return new self($this->serialization() . "|$tag|$value|");
+		return new self($this->serialize() . "|$tag|$value|");
 	}
 
-	public function serialization(): string {
+	public function serialize(): string {
 		return $this->output;
 	}
 }

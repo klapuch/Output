@@ -19,7 +19,7 @@ final class WrappedXml extends Tester\TestCase {
 				'root',
 				new Output\FakeFormat('<a>A</a>'),
 				new Output\FakeFormat('<b>B</b>')
-			))->serialization()
+			))->serialize()
 		);
 	}
 
@@ -30,7 +30,7 @@ final class WrappedXml extends Tester\TestCase {
 				'root',
 				new Output\FakeFormat('<a>A</a>'),
 				new Output\FakeFormat('<b>B</b>')
-			))->with('x', 'X')->serialization()
+			))->with('x', 'X')->serialize()
 		);
 	}
 }

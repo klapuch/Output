@@ -17,7 +17,7 @@ final class RemoteXml extends Tester\TestCase {
 			'<root><content>a</content></root>',
 			(new Output\RemoteXml(
 				Tester\FileMock::create('<root><content>a</content></root>')
-			))->serialization()
+			))->serialize()
 		);
 	}
 
@@ -28,7 +28,7 @@ final class RemoteXml extends Tester\TestCase {
 				Tester\FileMock::create(
 					'<root>Příliš žluťoučký kůň úpěl ďábelské ódy.</root>'
 				)
-			))->serialization()
+			))->serialize()
 		);
 	}
 
@@ -37,7 +37,7 @@ final class RemoteXml extends Tester\TestCase {
 			'<outer>OUTER</outer>',
 			(new Output\RemoteXml(
 				Tester\FileMock::create('<root><content>a</content></root>')
-			))->with('outer', 'OUTER')->serialization()
+			))->with('outer', 'OUTER')->serialize()
 		);
 	}
 
@@ -46,7 +46,7 @@ final class RemoteXml extends Tester\TestCase {
 			'<outer/>',
 			(new Output\RemoteXml(
 				Tester\FileMock::create('<root><content>a</content></root>')
-			))->with('outer')->serialization()
+			))->with('outer')->serialize()
 		);
 	}
 }
