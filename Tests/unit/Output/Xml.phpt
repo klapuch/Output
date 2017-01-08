@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../../bootstrap.php';
 
 final class Xml extends Tester\TestCase {
-	public function testXmlFormat() {
+	public function testBasicXmFormat() {
 		Assert::same(
 			'<root><price>400</price><type>useful</type><escape>&lt;&gt;&quot;&amp;&apos;</escape></root>',
 			(new Output\Xml(

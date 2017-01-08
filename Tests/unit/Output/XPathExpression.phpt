@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../../bootstrap.php';
 
 final class XPathExpression extends Tester\TestCase {
-	public function testExistingExpression() {
+	public function testMatchingExistingExpression() {
 		Assert::same(
 			['Dominik'],
 			(new Output\XPathExpression(

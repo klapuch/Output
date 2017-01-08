@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../../bootstrap.php';
 
 final class XsltTemplate extends Tester\TestCase {
-	public function testRendering() {
+	public function testRenderingWithCorrectEncoding() {
 		$template = Tester\FileMock::create(
 			'<?xml version="1.0" encoding="UTF-8"?>
 			<xsl:stylesheet version="1.0" 
