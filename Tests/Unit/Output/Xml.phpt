@@ -32,7 +32,17 @@ final class Xml extends Tester\TestCase {
 		);
 	}
 
-	public function testNestedArrays() {
+	public function testUsingUt8Encoding() {
+		Assert::same(
+			'<root><encoding>Koňíček úpěl</encoding></root>',
+			(new Output\Xml(
+				['encoding' => 'Koňíček úpěl'],
+				'root'
+			))->serialization()
+		);
+	}
+
+	public function testNestedParents() {
 		Assert::same(
 			'<root><price>400</price><type>useful</type><lines><id>123</id><name>ABC</name></lines></root>',
 			(new Output\Xml(
@@ -51,7 +61,7 @@ final class Xml extends Tester\TestCase {
 		);
 	}
 
-	public function testEmptyInputWithoutFail() {
+	public function testNoEmptyShortTag() {
 		Assert::same('<root></root>', (new Output\Xml([], 'root'))->serialization());
 	}
 
@@ -62,7 +72,7 @@ final class Xml extends Tester\TestCase {
 		);
 	}
 
-	public function testAddingNodesWithoutOverwriting() {
+	public function testFirstlyStatedNodesWithPrecendence() {
 		Assert::equal(
 			(new Output\Xml(
 				['name' => 'Dominik', 'id' => '5'],
@@ -75,7 +85,7 @@ final class Xml extends Tester\TestCase {
 		);
 	}
 
-	public function testAddingNodesWithoutContent() {
+	public function testWrappingStatedNodes() {
 		Assert::same(
 			'<root><AAA><XXX><name>Dominik</name></XXX></AAA></root>',
 			(new Output\Xml(['name' => 'Dominik'], 'root'))
@@ -85,7 +95,7 @@ final class Xml extends Tester\TestCase {
 		);
 	}
 
-	public function testAddingArrayNodes() {
+	public function testAddingParentNodes() {
 		Assert::same(
 			'<root><OUTER><name>Dominik</name><XXX><xxx_inner><who>xxx</who></xxx_inner></XXX><INNER><who>me</who></INNER></OUTER></root>',
 			(new Output\Xml(['name' => 'Dominik'], 'root'))
