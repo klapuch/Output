@@ -29,7 +29,7 @@ final class ValidXml extends Tester\TestCase {
 			(new Output\ValidXml(
 				new Output\FakeFormat($xml),
 				Tester\FileMock::create($xsd)
-			))->serialize()
+			))->serialization()
 		);
 	}
 
@@ -51,7 +51,7 @@ final class ValidXml extends Tester\TestCase {
 		(new Output\ValidXml(
 			new Output\FakeFormat($xml),
 			Tester\FileMock::create($xsd)
-		))->serialize();
+		))->serialization();
 	}
 
 	public function testLibxmlWithoutChange() {
@@ -70,7 +70,7 @@ final class ValidXml extends Tester\TestCase {
 		(new Output\ValidXml(
 			new Output\FakeFormat($xml),
 			Tester\FileMock::create($xsd)
-		))->serialize();
+		))->serialization();
 		Assert::false(libxml_use_internal_errors(false));
 	}
 }

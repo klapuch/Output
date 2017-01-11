@@ -18,10 +18,10 @@ final class ValidXml implements Format {
 		return $this->origin->with($tag, $content);
 	}
 
-	public function serialize(): string {
+	public function serialization(): string {
 		$previous = libxml_use_internal_errors(true);
 		$xml = new \DOMDocument();
-		$xml->loadXML($this->origin->serialize());
+		$xml->loadXML($this->origin->serialization());
 		$valid = $xml->schemaValidate($this->schema);
 		libxml_use_internal_errors($previous);
 		if($valid)

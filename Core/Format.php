@@ -15,5 +15,5 @@ interface Format {
 	 * Print the content in particular format
 	 * @return string
 	 */
-	public function serialize(): string;
+	public function serialization(): string;
 }

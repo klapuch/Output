@@ -21,7 +21,7 @@ final class XsltTemplate implements Template {
 		$xslt->setParameter('', $variables);
 		$xslt->importStylesheet($xsl);
 		$xml = new \DOMDocument();
-		$xml->loadXml($this->stylesheet->serialize());
+		$xml->loadXml($this->stylesheet->serialization());
 		return $xslt->transformToXml($xml);
 	}
 }

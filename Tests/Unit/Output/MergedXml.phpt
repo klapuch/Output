@@ -25,7 +25,7 @@ final class MergedXml extends Tester\TestCase {
 					$root,
 					new \SimpleXMLElement('<merged>MERGED</merged>'),
 					new \SimpleXMLElement('<another>ANOTHER</another>')
-				))->serialize()
+				))->serialization()
 			)
 		);
 	}
@@ -43,7 +43,7 @@ final class MergedXml extends Tester\TestCase {
 					$root,
 					new \SimpleXMLElement('<merged><inner>INNER</inner></merged>'),
 					new \SimpleXMLElement('<another>ANOTHER</another>')
-				))->serialize()
+				))->serialization()
 			)
 		);
 	}
@@ -58,7 +58,7 @@ final class MergedXml extends Tester\TestCase {
 			(new Output\MergedXml(
 				$root,
 				new \SimpleXMLElement('<merged>MERGED</merged>     ')
-			))->serialize()
+			))->serialization()
 		);
 	}
 
@@ -73,7 +73,7 @@ final class MergedXml extends Tester\TestCase {
 			(new Output\MergedXml(
 				$root,
 				new \SimpleXMLElement('<merged>MERGED</merged>')
-			))->with('another', 'ANOTHER')->serialize()
+			))->with('another', 'ANOTHER')->serialization()
 		);
 	}
 
@@ -88,7 +88,7 @@ final class MergedXml extends Tester\TestCase {
 			(new Output\MergedXml(
 				$root,
 				new \SimpleXMLElement('<merged>MERGED</merged>')
-			))->with('another', '<inner>ANOTHER</inner>')->serialize()
+			))->with('another', '<inner>ANOTHER</inner>')->serialization()
 		);
 	}
 
@@ -103,7 +103,7 @@ final class MergedXml extends Tester\TestCase {
 			(new Output\MergedXml(
 				$root,
 				new \SimpleXMLElement('<merged>MERGED</merged>')
-			))->with('another')->serialize()
+			))->with('another')->serialization()
 		);
 	}
 }
