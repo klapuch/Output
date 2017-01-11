@@ -12,11 +12,21 @@ use Tester\Assert;
 require __DIR__ . '/../../bootstrap.php';
 
 final class Xml extends Tester\TestCase {
-	public function testBasicXmFormat() {
+	public function testMultipleTypes() {
 		Assert::same(
-			'<root><price>400</price><type>useful</type><escape>&lt;&gt;&quot;&amp;&apos;</escape></root>',
+			'<root><price>400</price><type>useful</type></root>',
 			(new Output\Xml(
-				['price' => 400, 'type' => 'useful', 'escape' => "<>\"&'"],
+				['price' => 400, 'type' => 'useful'],
+				'root'
+			))->serialization()
+		);
+	}
+
+	public function testEscapedCharacters() {
+		Assert::same(
+			'<root><escape>&lt;&gt;&quot;&amp;&apos;</escape></root>',
+			(new Output\Xml(
+				['escape' => "<>\"&'"],
 				'root'
 			))->serialization()
 		);
