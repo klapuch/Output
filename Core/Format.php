@@ -6,7 +6,7 @@ interface Format {
 	/**
 	 * Prepend/Append next element
 	 * @param string $tag
-	 * @param string|array $content
+	 * @param mixed $content
 	 * @return Format
 	 */
 	public function with(string $tag, $content = null): self;
