@@ -106,6 +106,23 @@ final class MergedXml extends Tester\TestCase {
 			))->with('another')->serialization()
 		);
 	}
+
+	public function testBalancingChunkes() {
+		$root = new \DOMDocument();
+		$root->loadXML('<root><element>ELEMENT</element></root>');
+		$merge = new \SimpleXMLElement(
+			'<r><merged><inner>INNER</inner></merged><another>ANOTHER</another></r>'
+		);
+		Assert::same(
+			'<?xml version="1.0"?>
+<root><element>ELEMENT</element><merged><inner>INNER</inner></merged><another>ANOTHER</another></root>',
+			trim(
+				(new Output\MergedXml(
+					$root, ...$merge->xpath('child::*')
+				))->serialization()
+			)
+		);
+	}
 }
 
 (new MergedXml())->run();

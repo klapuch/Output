@@ -50,7 +50,8 @@ final class MergedXml implements Format {
 	 * @return string
 	 */
 	private function withoutDeclaration(string $xml): string {
-		return substr($xml, strpos($xml, '?>') + 2);
+		$position = strpos($xml, '?>');
+		return $position === false ? $xml : substr($xml, $position + 2);
 	}
 
 	/**
