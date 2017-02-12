@@ -31,6 +31,30 @@ final class MergedXml implements Format {
 		);
 	}
 
+	public function adjusted(string $tag, callable $adjustment): Format {
+		foreach($this->root->getElementsByTagName($tag) as $element)
+			$element->nodeValue = call_user_func($adjustment, $element->nodeValue);
+		return new self(
+			$this->root,
+			...array_reduce(
+				$this->elements,
+				function(array $adjusted, \SimpleXMLElement $element) use(
+					$tag, $adjustment
+				): array {
+					if($element->getName() === $tag) {
+						$element[0] = call_user_func(
+							$adjustment,
+							(string)$element
+						);
+					}
+					$adjusted[] = $element;
+					return $adjusted;
+				},
+				[]
+			)
+		);
+	}
+
 	public function serialization(): string {
 		foreach($this->elements as $element) {
 			$fragment = $this->root->createDocumentFragment();     

@@ -22,6 +22,15 @@ final class Xml implements Format {
 		return new self($this->values + [$tag => $content], $this->root);
 	}
 
+	public function adjusted(string $tag, callable $adjustment): Format {
+		if(!$this->adjustable($tag, $this->values))
+			return $this;
+		return new self(
+			[$tag => call_user_func($adjustment, $this->values[$tag])] + $this->values,
+			$this->root
+		);
+	}
+
 	public function serialization(): string {
 		if($this->root === null) {
 			return array_reduce(
@@ -74,5 +83,15 @@ final class Xml implements Format {
 	 */
 	private function toXml(string $content): string {
 		return htmlspecialchars($content, ENT_QUOTES | ENT_XML1, 'UTF-8');
+	}
+
+	/**
+	 * Is the tag adjustable?
+	 * @param string $tag
+	 * @param array $values
+	 * @return bool
+	 */
+	private function adjustable(string $tag, array $values): bool {
+		return isset($values[$tag]);
 	}
 }

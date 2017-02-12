@@ -24,6 +24,18 @@ final class WrappedXml implements Format {
 		);
 	}
 
+	public function adjusted(string $tag, callable $adjustment): Format {
+		return new self(
+			$this->wrap,
+			...array_map(
+				function(Format $format) use($tag, $adjustment): Format {
+					return $format->adjusted($tag, $adjustment);
+				},
+				$this->formats
+			)
+		);
+	}
+
 	public function serialization(): string {
 		return $this->wrap(
 			array_reduce(

@@ -21,6 +21,13 @@ final class RemoteXml implements Format {
 		);
 	}
 
+	public function adjusted(string $tag, callable $adjustment): Format {
+		$dom = $this->toDom($this->source);
+		foreach($dom->getElementsByTagName($tag) as $element)
+			$element->nodeValue = call_user_func($adjustment, $element->nodeValue);
+		return new DomFormat($dom, 'xml');
+	}
+
 	public function serialization(): string {
 		$dom = $this->toDOM($this->source);
 		return $dom->saveXML($dom->documentElement);

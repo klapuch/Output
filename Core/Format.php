@@ -16,4 +16,12 @@ interface Format {
 	 * @return string
 	 */
 	public function serialization(): string;
+
+	/**
+	 * Adjusted format within the given tag and applicable adjustment
+	 * @param string $tag
+	 * @param callable $adjustment
+	 * @return Format
+	 */
+	public function adjusted(string $tag, callable $adjustment): self;
 }

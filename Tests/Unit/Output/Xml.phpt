@@ -105,6 +105,48 @@ final class Xml extends Tester\TestCase {
 			->serialization()
 		);
 	}
+
+	public function testAdjustingUsingAnonymousFunction() {
+		Assert::same(
+			'<root><chars>FOO</chars><time>2015-01-01</time></root>',
+			(new Output\Xml([], 'root'))
+			->with('time', '2015-01-01')
+			->with('chars', 'foo')
+			->adjusted('chars', function(string $chars) {
+				return strtoupper($chars);
+			})
+			->serialization()
+		);
+	}
+
+	public function testAdjustingUsingStringCallback() {
+		Assert::same(
+			'<root><chars>FOO</chars><time>2015-01-01</time></root>',
+			(new Output\Xml([], 'root'))
+			->with('time', '2015-01-01')
+			->with('chars', 'foo')
+			->adjusted('chars', 'strtoupper')
+			->serialization()
+		);
+	}
+
+	public function testAdjustingStatedValues() {
+		Assert::same(
+			'<root><chars>FOO</chars><time>2015-01-01</time></root>',
+			(new Output\Xml(['chars' => 'foo'], 'root'))
+			->with('time', '2015-01-01')
+			->adjusted('chars', 'strtoupper')
+			->serialization()
+		);
+	}
+
+	public function testIgnoringUnknownTagToBeAdjusted() {
+		Assert::noError(function() {
+			(new Output\Xml(['chars' => 'foo'], 'root'))
+				->with('time', '2015-01-01')
+				->adjusted('foo', 'strtoupper');
+		});
+	}
 }
 
 (new Xml())->run();

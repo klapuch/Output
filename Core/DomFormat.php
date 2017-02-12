@@ -23,6 +23,12 @@ final class DomFormat implements Format {
 		return new self($this->dom, $this->output);
 	}
 
+	public function adjusted(string $tag, callable $adjustment): Format {
+		foreach($this->dom->getElementsByTagName($tag) as $element)
+			$element->nodeValue = call_user_func($adjustment, $element->nodeValue);
+		return $this;
+	}
+
 	public function serialization(): string {
 		if($this->supported($this->output))
 			return $this->dom->{self::OUTPUTS[strtolower($this->output)]}();

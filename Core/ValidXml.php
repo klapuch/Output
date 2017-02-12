@@ -18,6 +18,10 @@ final class ValidXml implements Format {
 		return $this->origin->with($tag, $content);
 	}
 
+	public function adjusted(string $tag, callable $adjustment): Format {
+		return $this->origin->adjusted($tag, $adjustment);
+	}
+
 	public function serialization(): string {
 		$previous = libxml_use_internal_errors(true);
 		$xml = new \DOMDocument();

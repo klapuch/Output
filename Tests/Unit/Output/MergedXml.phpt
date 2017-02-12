@@ -123,6 +123,61 @@ final class MergedXml extends Tester\TestCase {
 			)
 		);
 	}
+
+	public function testAdjustingElements() {
+		$root = new \DOMDocument();
+		$root->loadXML('<root><element>element</element></root>');
+		Assert::same(
+			'<?xml version="1.0"?>
+<root><element>element</element>
+<merged>MERGED</merged>
+<another>another</another></root>',
+			trim(
+				(new Output\MergedXml(
+					$root,
+					new \SimpleXMLElement('<merged>merged</merged>'),
+					new \SimpleXMLElement('<another>another</another>')
+				))
+				->adjusted('merged', 'strtoupper')
+				->adjusted('inner', 'strtoupper')
+				->serialization()
+			)
+		);
+	}
+
+	public function testAdjustingRoot() {
+		$root = new \DOMDocument();
+		$root->loadXML('<root><element>element</element></root>');
+		Assert::same(
+			'<?xml version="1.0"?>
+<root><element>ELEMENT</element>
+<merged>merged</merged>
+<another>another</another></root>',
+			trim(
+				(new Output\MergedXml(
+					$root,
+					new \SimpleXMLElement('<merged>merged</merged>'),
+					new \SimpleXMLElement('<another>another</another>')
+				))
+				->adjusted('element', 'strtoupper')
+				->serialization()
+			)
+		);
+	}
+
+	public function testIgnoringUnknownTagToBeAdjusted() {
+		$root = new \DOMDocument();
+		$root->loadXML('<root><element>element</element></root>');
+		Assert::noError(function() use($root) {
+			(new Output\MergedXml(
+				$root,
+				new \SimpleXMLElement('<merged>merged</merged>'),
+				new \SimpleXMLElement('<another>another</another>')
+			))
+			->adjusted('foooooooooo', 'strtoupper')
+			->adjusted('barrrrrrrrr', 'strtoupper');
+		});
+	}
 }
 
 (new MergedXml())->run();

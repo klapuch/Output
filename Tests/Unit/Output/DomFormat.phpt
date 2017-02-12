@@ -71,6 +71,37 @@ final class DomFormat extends Tester\TestCase {
 				->serialization()
 		);
 	}
+
+	public function testAdjustingPresentValue() {
+		$dom = new \DOMDocument();
+		$dom->loadXML('<root><element>element</element></root>');
+		Assert::same(
+			'<root><element>ELEMENT</element></root>' . "\n",
+			(new Output\DomFormat($dom, 'html'))
+			->adjusted('element', 'strtoupper')
+			->serialization()
+		);
+	}
+
+	public function testAdjustingMultiplePresentValues() {
+		$dom = new \DOMDocument();
+		$dom->loadXML('<root><element>element</element><element>foo</element></root>');
+		Assert::same(
+			'<root><element>ELEMENT</element><element>FOO</element></root>' . "\n",
+			(new Output\DomFormat($dom, 'html'))
+			->adjusted('element', 'strtoupper')
+			->serialization()
+		);
+	}
+
+	public function testIgnoringUnknownTagToBeAdjusted() {
+		Assert::noError(function() {
+			$dom = new \DOMDocument();
+			$dom->loadXML('<root></root>');
+			(new Output\DomFormat($dom, 'html'))
+			->adjusted('foo', 'strtoupper');
+		});
+	}
 }
 
 (new DomFormat())->run();

@@ -16,6 +16,10 @@ final class FakeFormat implements Format {
 		return new self($this->serialization() . "|$tag|$value|");
 	}
 
+	public function adjusted(string $tag, callable $adjustment): Format {
+		return $this;
+	}
+
 	public function serialization(): string {
 		return $this->output;
 	}

@@ -41,6 +41,18 @@ final class RemoteXml extends Tester\TestCase {
 		);
 	}
 
+	public function testNotAffectingFileDuringConcatening() {
+		$content = '<root><content>a</content></root>';
+		$file = Tester\FileMock::create($content);
+		Assert::contains(
+			'<outer>OUTER</outer>',
+			(new Output\RemoteXml($file))
+			->with('outer', 'OUTER')
+			->serialization()
+		);
+		Assert::same($content, file_get_contents($file));
+	}
+
 	public function testAddingNewEmptyNode() {
 		Assert::contains(
 			'<outer/>',
@@ -48,6 +60,28 @@ final class RemoteXml extends Tester\TestCase {
 				Tester\FileMock::create('<root><content>a</content></root>')
 			))->with('outer')->serialization()
 		);
+	}
+
+	public function testNotAffectingFileDuringAdjusting() {
+		$content = '<root><content>foo</content></root>';
+		$file = Tester\FileMock::create($content);
+		Assert::contains(
+			'<root><content>FOO</content></root>',
+			(new Output\RemoteXml($file))
+			->adjusted('content', 'strtoupper')
+			->serialization()
+		);
+		Assert::same($content, file_get_contents($file));
+	}
+
+	public function testIgnoringUnknownTagToBeAdjusted() {
+		Assert::noError(function() {
+			$dom = new \DOMDocument();
+			$dom->loadXML('<root></root>');
+			(new Output\RemoteXml(
+				Tester\FileMock::create('<root><content>foo</content></root>')
+			))->adjusted('foo', 'strtoupper');
+		});
 	}
 }
 
