@@ -43,10 +43,6 @@ final class WrappedXml implements Format {
 	 * @return string
 	 */
 	private function wrap(string $content): string {
-		return sprintf(
-			'<%1$s>%2$s</%1$s>',
-			$this->wrap,
-			$content
-		);
+		return sprintf('<%1$s>%2$s</%1$s>', $this->wrap, $content);
 	}
 }
