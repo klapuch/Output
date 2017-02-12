@@ -13,7 +13,7 @@ require __DIR__ . '/../../bootstrap.php';
 
 final class RemoteXml extends Tester\TestCase {
 	public function testLoadingFromExistingSource() {
-		Assert::contains(
+		Assert::same(
 			'<root><content>a</content></root>',
 			(new Output\RemoteXml(
 				Tester\FileMock::create('<root><content>a</content></root>')
@@ -22,7 +22,7 @@ final class RemoteXml extends Tester\TestCase {
 	}
 
 	public function testCorrectEncoding() {
-		Assert::contains(
+		Assert::same(
 			'<root>Příliš žluťoučký kůň úpěl ďábelské ódy.</root>',
 			(new Output\RemoteXml(
 				Tester\FileMock::create(
