@@ -17,7 +17,7 @@ final class MergedXml implements Format {
 		$this->elements = $elements;
 	}
 
-	public function with(string $tag, $content = null): Format {
+	public function with($tag, $content = null): Format {
 		return new self(
 			$this->root,
 			...array_merge(
@@ -31,7 +31,7 @@ final class MergedXml implements Format {
 		);
 	}
 
-	public function adjusted(string $tag, callable $adjustment): Format {
+	public function adjusted($tag, callable $adjustment): Format {
 		foreach($this->root->getElementsByTagName($tag) as $element)
 			$element->nodeValue = call_user_func($adjustment, $element->nodeValue);
 		return new self(

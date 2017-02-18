@@ -12,11 +12,11 @@ final class FakeFormat implements Format {
 		$this->output = $output;
 	}
 
-	public function with(string $tag, $value = null): Format {
+	public function with($tag, $value = null): Format {
 		return new self($this->serialization() . "|$tag|$value|");
 	}
 
-	public function adjusted(string $tag, callable $adjustment): Format {
+	public function adjusted($tag, callable $adjustment): Format {
 		return $this;
 	}
 

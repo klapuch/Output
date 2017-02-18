@@ -15,7 +15,7 @@ final class WrappedXml implements Format {
 		$this->formats = $formats;
 	}
 
-	public function with(string $tag, $content = null): Format {
+	public function with($tag, $content = null): Format {
 		return new self(
 			$this->wrap,
 			...array_map(function(Format $format) use($tag, $content): Format {
@@ -24,7 +24,7 @@ final class WrappedXml implements Format {
 		);
 	}
 
-	public function adjusted(string $tag, callable $adjustment): Format {
+	public function adjusted($tag, callable $adjustment): Format {
 		return new self(
 			$this->wrap,
 			...array_map(

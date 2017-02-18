@@ -14,11 +14,11 @@ final class ValidXml implements Format {
 		$this->schema = $schema;
 	}
 
-	public function with(string $tag, $content = null): Format {
+	public function with($tag, $content = null): Format {
 		return $this->origin->with($tag, $content);
 	}
 
-	public function adjusted(string $tag, callable $adjustment): Format {
+	public function adjusted($tag, callable $adjustment): Format {
 		return $this->origin->adjusted($tag, $adjustment);
 	}
 

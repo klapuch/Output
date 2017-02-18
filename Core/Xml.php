@@ -16,13 +16,13 @@ final class Xml implements Format {
 		$this->root = $root;
 	}
 
-	public function with(string $tag, $content = null): Format {
+	public function with($tag, $content = null): Format {
 		if($content === null)
 			return new self([$tag => $this->values], $this->root);
 		return new self($this->values + [$tag => $content], $this->root);
 	}
 
-	public function adjusted(string $tag, callable $adjustment): Format {
+	public function adjusted($tag, callable $adjustment): Format {
 		if(!$this->adjustable($tag, $this->values))
 			return $this;
 		return new self(

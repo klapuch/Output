@@ -18,12 +18,12 @@ final class DomFormat implements Format {
 		$this->output = $output;
 	}
 
-	public function with(string $tag, $content = null): Format {
+	public function with($tag, $content = null): Format {
 		$this->dom->appendChild($this->dom->createElement($tag, $content));
 		return new self($this->dom, $this->output);
 	}
 
-	public function adjusted(string $tag, callable $adjustment): Format {
+	public function adjusted($tag, callable $adjustment): Format {
 		foreach($this->dom->getElementsByTagName($tag) as $element)
 			$element->nodeValue = call_user_func($adjustment, $element->nodeValue);
 		return $this;

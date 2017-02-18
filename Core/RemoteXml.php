@@ -12,7 +12,7 @@ final class RemoteXml implements Format {
 		$this->source = $source;
 	}
 
-	public function with(string $tag, $content = null): Format {
+	public function with($tag, $content = null): Format {
 		return new MergedXml(
 			$this->toDOM($this->source),
 			new \SimpleXMLElement(
@@ -21,7 +21,7 @@ final class RemoteXml implements Format {
 		);
 	}
 
-	public function adjusted(string $tag, callable $adjustment): Format {
+	public function adjusted($tag, callable $adjustment): Format {
 		$dom = $this->toDom($this->source);
 		foreach($dom->getElementsByTagName($tag) as $element)
 			$element->nodeValue = call_user_func($adjustment, $element->nodeValue);

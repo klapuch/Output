@@ -5,11 +5,11 @@ namespace Klapuch\Output;
 interface Format {
 	/**
 	 * Prepend/Append next element
-	 * @param string $tag
+	 * @param mixed $tag
 	 * @param mixed $content
 	 * @return Format
 	 */
-	public function with(string $tag, $content = null): self;
+	public function with($tag, $content = null): self;
 
 	/**
 	 * Print the content in particular format
@@ -19,9 +19,9 @@ interface Format {
 
 	/**
 	 * Adjusted format within the given tag and applicable adjustment
-	 * @param string $tag
+	 * @param mixed $tag
 	 * @param callable $adjustment
 	 * @return Format
 	 */
-	public function adjusted(string $tag, callable $adjustment): self;
+	public function adjusted($tag, callable $adjustment): self;
 }

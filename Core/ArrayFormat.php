@@ -12,11 +12,11 @@ final class ArrayFormat implements Format {
 		$this->values = $values;
 	}
 
-	public function with(string $key, $content = null): Format {
+	public function with($key, $content = null): Format {
 		return new self($this->values + [$key => $content]);
 	}
 
-	public function adjusted(string $key, callable $adjustment): Format {
+	public function adjusted($key, callable $adjustment): Format {
 		return new self(
 			array_replace(
 				$this->values,
