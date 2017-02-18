@@ -47,13 +47,16 @@ final class WrappedXml extends Tester\TestCase {
 	}
 
 	public function testIgnoringUnknownTag() {
-		Assert::noError(function() {
+		Assert::same(
+			'<root><a>foo</a><b>bar</b></root>',
 			(new Output\WrappedXml(
 				'root',
 				new Output\Xml(['a' => 'foo']),
 				new Output\Xml(['b' => 'bar'])
-			))->adjusted('xxx', 'strtoupper');
-		});
+			))->adjusted('xxx', 'strtoupper')
+			->serialization()
+
+		);
 	}
 }
 

@@ -168,15 +168,22 @@ final class MergedXml extends Tester\TestCase {
 	public function testIgnoringUnknownTagToBeAdjusted() {
 		$root = new \DOMDocument();
 		$root->loadXML('<root><element>element</element></root>');
-		Assert::noError(function() use($root) {
-			(new Output\MergedXml(
-				$root,
-				new \SimpleXMLElement('<merged>merged</merged>'),
-				new \SimpleXMLElement('<another>another</another>')
-			))
-			->adjusted('foooooooooo', 'strtoupper')
-			->adjusted('barrrrrrrrr', 'strtoupper');
-		});
+		Assert::same(
+			'<?xml version="1.0"?>
+<root><element>element</element>
+<merged>merged</merged>
+<another>another</another></root>',
+			trim(
+				(new Output\MergedXml(
+					$root,
+					new \SimpleXMLElement('<merged>merged</merged>'),
+					new \SimpleXMLElement('<another>another</another>')
+				))
+				->adjusted('foooooooooo', 'strtoupper')
+				->adjusted('barrrrrrrrr', 'strtoupper')
+				->serialization()
+			)
+		);
 	}
 }
 

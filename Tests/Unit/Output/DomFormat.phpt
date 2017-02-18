@@ -95,12 +95,15 @@ final class DomFormat extends Tester\TestCase {
 	}
 
 	public function testIgnoringUnknownTagToBeAdjusted() {
-		Assert::noError(function() {
-			$dom = new \DOMDocument();
-			$dom->loadXML('<root></root>');
+		$dom = new \DOMDocument();
+		$dom->loadXML('<root></root>');
+		Assert::same(
+			'<root></root>
+',
 			(new Output\DomFormat($dom, 'html'))
-			->adjusted('foo', 'strtoupper');
-		});
+			->adjusted('foo', 'strtoupper')
+			->serialization()
+		);
 	}
 }
 

@@ -141,11 +141,12 @@ final class Xml extends Tester\TestCase {
 	}
 
 	public function testIgnoringUnknownTagToBeAdjusted() {
-		Assert::noError(function() {
-			(new Output\Xml(['chars' => 'foo'], 'root'))
-				->with('time', '2015-01-01')
-				->adjusted('foo', 'strtoupper');
-		});
+		Assert::same(
+			'<chars>foo</chars>',
+			(new Output\Xml(['chars' => 'foo']))
+			->adjusted('foo', 'strtoupper')
+			->serialization()
+		);
 	}
 }
 

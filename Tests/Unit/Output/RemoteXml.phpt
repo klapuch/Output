@@ -75,13 +75,17 @@ final class RemoteXml extends Tester\TestCase {
 	}
 
 	public function testIgnoringUnknownTagToBeAdjusted() {
-		Assert::noError(function() {
-			$dom = new \DOMDocument();
-			$dom->loadXML('<root></root>');
+		$dom = new \DOMDocument();
+		$dom->loadXML('<root></root>');
+		Assert::same(
+			'<?xml version="1.0"?>
+<root><content>foo</content></root>
+',
 			(new Output\RemoteXml(
 				Tester\FileMock::create('<root><content>foo</content></root>')
-			))->adjusted('foo', 'strtoupper');
-		});
+			))->adjusted('foo', 'strtoupper')
+			->serialization()
+		);
 	}
 }
 
