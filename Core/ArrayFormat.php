@@ -20,7 +20,7 @@ final class ArrayFormat implements Format {
 		return new self(
 			array_replace(
 				$this->values,
-				isset($this->values[$key])
+				array_key_exists($key, $this->values)
 				? [$key => call_user_func($adjustment, $this->values[$key])]
 				: []
 			)

@@ -19,11 +19,20 @@ final class ArrayFormat extends Tester\TestCase {
 		);
 	}
 
-	public function testAdjutingByExistingKey() {
+	public function testAdjustingByExistingKey() {
 		Assert::same(
 			'ABcd',
 			(new Output\ArrayFormat(['a' => 'ab', 'b' => 'cd']))
 			->adjusted('a', 'strtoupper')
+			->serialization()
+		);
+	}
+
+	public function testAdjustingByExistingKeyWithEmptyValue() {
+		Assert::same(
+			'abFOO',
+			(new Output\ArrayFormat(['a' => 'ab', 'b' => null]))
+			->adjusted('b', function($null) { return 'FOO'; })
 			->serialization()
 		);
 	}
