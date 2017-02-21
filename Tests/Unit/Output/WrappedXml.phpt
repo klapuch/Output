@@ -55,7 +55,17 @@ final class WrappedXml extends Tester\TestCase {
 				new Output\Xml(['b' => 'bar'])
 			))->adjusted('xxx', 'strtoupper')
 			->serialization()
+		);
+	}
 
+	public function testWrappingExceptDeclaration() {
+		Assert::same(
+			'<root><a>A</a><b>B</b></root>',
+			(new Output\WrappedXml(
+				'root',
+				new Output\FakeFormat('<?xml version="1.0" ?><a>A</a>'),
+				new Output\FakeFormat('<b>B</b>')
+			))->serialization()
 		);
 	}
 }
