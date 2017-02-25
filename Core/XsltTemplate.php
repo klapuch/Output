@@ -18,6 +18,7 @@ final class XsltTemplate implements Template {
 		$xsl = new \DOMDocument();
 		$xsl->load($this->template);
 		$xslt = new \XSLTProcessor();
+		$xslt->registerPHPFunctions();
 		$xslt->setParameter('', $variables);
 		$xslt->importStylesheet($xsl);
 		$xml = new \DOMDocument();

@@ -76,6 +76,29 @@ final class XsltTemplate extends Tester\TestCase {
 			))->render(['first' => 'První', 'second' => 'Druhý']))
 		);
 	}
+
+	public function testRegisteredFunctions() {
+		$template = Tester\FileMock::create(
+			'<?xml version="1.0" encoding="UTF-8"?>
+			<xsl:stylesheet version="1.0" 
+				 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+				 xmlns:php="http://php.net/xsl">
+				<xsl:output method="html" encoding="utf-8"/>
+				<xsl:template match="/">
+					<p><xsl:value-of select="php:function(\'strtoupper\', $first)"/></p>
+				</xsl:template>
+			</xsl:stylesheet>'
+		);
+		Assert::contains(
+			'<p xmlns:php="http://php.net/xsl">FIRST</p>',
+			trim((new Output\XsltTemplate(
+				$template,
+				new Output\FakeFormat(
+					'<?xml version="1.0"?><root/>'
+				)
+			))->render(['first' => 'first']))
+		);
+	}
 }
 
 (new XsltTemplate())->run();
