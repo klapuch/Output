@@ -44,7 +44,7 @@ final class DomFormat implements Format {
 	 */
 	private function supported(string $output): bool {
 		return (bool)array_uintersect(
-			[$this->output],
+			[$output],
 			array_keys(self::OUTPUTS),
 			'strcasecmp'
 		);

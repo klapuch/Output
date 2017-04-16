@@ -17,7 +17,7 @@ final class RemoteXml implements Format {
 			$this->toDOM($this->source),
 			new \SimpleXMLElement(
 				sprintf('<%1$s>%2$s</%1$s>', $tag, $content)
-			) 
+			)
 		);
 	}
 
@@ -40,7 +40,7 @@ final class RemoteXml implements Format {
 	 */
 	private function toDOM(string $source): \DOMDocument {
 		$xml = new \DOMDocument('1.0', 'utf-8');
-		$xml->load($this->source);
+		$xml->load($source);
 		return $xml;
 	}
 }
