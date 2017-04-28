@@ -40,7 +40,7 @@ final class Xml implements Format {
 						$tag,
 						$this->isParent($this->values[$tag])
 						? (new self($this->values[$tag]))->serialization()
-						: $this->toXml((string)$this->values[$tag])
+						: $this->toXml($this->cast($this->values[$tag]))
 					);
 					return $xml;
 				},
@@ -74,6 +74,18 @@ final class Xml implements Format {
 	 */
 	private function isParent($element): bool {
 		return $element === (array)$element;
+	}
+
+	/**
+	 * Cast the value to be proper XML and XSD proof
+	 * @param mixed $value
+	 * @return string
+	 */
+	private function cast($value): string {
+		if(is_bool($value)) {
+			return $value ? 'true' : 'false';
+		}
+		return (string)$value;
 	}
 
 	/**

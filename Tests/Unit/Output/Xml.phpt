@@ -22,6 +22,16 @@ final class Xml extends Tester\TestCase {
 		);
 	}
 
+	public function testTextBoolean() {
+		Assert::same(
+			'<root><yes>true</yes><no>false</no><zero>0</zero><one>1</one></root>',
+			(new Output\Xml(
+				['yes' => true, 'no' => false, 'zero' => 0, 'one' => 1],
+				'root'
+			))->serialization()
+		);
+	}
+
 	public function testEscapedCharacters() {
 		Assert::same(
 			'<root><escape>&lt;&gt;&quot;&amp;&apos;</escape></root>',
