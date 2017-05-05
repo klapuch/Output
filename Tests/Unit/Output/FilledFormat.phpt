@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../../bootstrap.php';
 
 final class FilledFormat extends Tester\TestCase {
-	public function testSerializingSet() {
+	public function testSerializingSetUsingOrigin() {
 		Assert::same(
 			'|name|me||title|god|',
 			(new Output\FilledFormat(
