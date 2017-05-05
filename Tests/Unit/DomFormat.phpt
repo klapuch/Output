@@ -1,15 +1,16 @@
 <?php
+declare(strict_types = 1);
 /**
  * @testCase
- * @phpVersion > 7.0
+ * @phpVersion > 7.1
  */
-namespace Klapuch\Unit\Output;
+namespace Klapuch\Output\Unit;
 
 use Klapuch\Output;
 use Tester;
 use Tester\Assert;
 
-require __DIR__ . '/../../bootstrap.php';
+require __DIR__ . '/../bootstrap.php';
 
 final class DomFormat extends Tester\TestCase {
 	public function testSerializingDomAsXml() {
@@ -43,7 +44,7 @@ final class DomFormat extends Tester\TestCase {
 	public function testCaseInsensitiveFormatMatch() {
 		$dom = new \DOMDocument();
 		$dom->loadXML('<root><element>ELEMENT</element></root>');
-		Assert::noError(function() use($dom) {
+		Assert::noError(function() use ($dom) {
 			(new Output\DomFormat($dom, 'XmL'))->serialization();
 		});
 	}

@@ -22,8 +22,8 @@ final class RemoteXml implements Format {
 	}
 
 	public function adjusted($tag, callable $adjustment): Format {
-		$dom = $this->toDom($this->source);
-		foreach($dom->getElementsByTagName($tag) as $element)
+		$dom = $this->toDOM($this->source);
+		foreach ($dom->getElementsByTagName($tag) as $element)
 			$element->nodeValue = call_user_func($adjustment, $element->nodeValue);
 		return new DomFormat($dom, 'xml');
 	}

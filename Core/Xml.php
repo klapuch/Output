@@ -6,8 +6,7 @@ namespace Klapuch\Output;
  * Values printed in XML format
  */
 final class Xml implements Format {
-	const EMPTY_XML = '';
-	const EMPTY_MATCH = [];
+	private const EMPTY_XML = '';
 	private $values;
 	private $root;
 
@@ -17,13 +16,13 @@ final class Xml implements Format {
 	}
 
 	public function with($tag, $content = null): Format {
-		if($content === null)
+		if ($content === null)
 			return new self([$tag => $this->values], $this->root);
 		return new self($this->values + [$tag => $content], $this->root);
 	}
 
 	public function adjusted($tag, callable $adjustment): Format {
-		if(!$this->adjustable($tag, $this->values))
+		if (!$this->adjustable($tag, $this->values))
 			return $this;
 		return new self(
 			[$tag => call_user_func($adjustment, $this->values[$tag])] + $this->values,
@@ -32,7 +31,7 @@ final class Xml implements Format {
 	}
 
 	public function serialization(): string {
-		if($this->root === null) {
+		if ($this->root === null) {
 			return array_reduce(
 				array_keys($this->values),
 				function(string $xml, string $tag): string {
@@ -47,7 +46,7 @@ final class Xml implements Format {
 				self::EMPTY_XML
 			);
 		}
-		return $this->element(
+		return (string) $this->element(
 			$this->root,
 			(new self($this->values))->serialization()
 		);
@@ -58,7 +57,7 @@ final class Xml implements Format {
 	 * If the tag is numeric, skip it as it is not allowed
 	 * @param string $tag
 	 * @param string|self $content
-	 * @return string
+	 * @return string|\Klapuch\Output\Xml|null
 	 */
 	private function element(string $tag, $content) {
 		return is_numeric($tag)
@@ -69,11 +68,11 @@ final class Xml implements Format {
 	/**
 	 * Check if the given element is parent of childrens
 	 * Faster version of is_array (because of the recursion)
-	 * @param mixed $content
+	 * @param mixed $element
 	 * @return bool
 	 */
 	private function isParent($element): bool {
-		return $element === (array)$element;
+		return $element === (array) $element;
 	}
 
 	/**
@@ -82,10 +81,10 @@ final class Xml implements Format {
 	 * @return string
 	 */
 	private function cast($value): string {
-		if(is_bool($value)) {
+		if (is_bool($value)) {
 			return $value ? 'true' : 'false';
 		}
-		return (string)$value;
+		return (string) $value;
 	}
 
 	/**

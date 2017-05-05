@@ -1,15 +1,16 @@
 <?php
+declare(strict_types = 1);
 /**
  * @testCase
- * @phpVersion > 7.0
+ * @phpVersion > 7.1
  */
-namespace Klapuch\Unit\Output;
+namespace Klapuch\Output\Unit;
 
 use Klapuch\Output;
 use Tester;
 use Tester\Assert;
 
-require __DIR__ . '/../../bootstrap.php';
+require __DIR__ . '/../bootstrap.php';
 
 final class ArrayFormat extends Tester\TestCase {
 	public function testSerializingArrayValues() {
@@ -32,7 +33,9 @@ final class ArrayFormat extends Tester\TestCase {
 		Assert::same(
 			'abFOO',
 			(new Output\ArrayFormat(['a' => 'ab', 'b' => null]))
-			->adjusted('b', function($null) { return 'FOO'; })
+			->adjusted('b', function($null) {
+				return 'FOO';
+			})
 			->serialization()
 		);
 	}
@@ -51,7 +54,9 @@ final class ArrayFormat extends Tester\TestCase {
 			'abcd',
 			(new Output\ArrayFormat(['a' => 'ab', 'b' => 'cd']))
 			->adjusted('foo', 'strtoupper')
-			->adjusted('foo', function($foo) { return 'FOOOOOOOOO'; })
+			->adjusted('foo', function($foo) {
+				return 'FOOOOOOOOO';
+			})
 			->serialization()
 		);
 	}

@@ -1,15 +1,16 @@
 <?php
+declare(strict_types = 1);
 /**
  * @testCase
- * @phpVersion > 7.0
+ * @phpVersion > 7.1
  */
-namespace Klapuch\Unit\Output;
+namespace Klapuch\Output\Unit;
 
 use Klapuch\Output;
 use Tester;
 use Tester\Assert;
 
-require __DIR__ . '/../../bootstrap.php';
+require __DIR__ . '/../bootstrap.php';
 
 final class WrappedXml extends Tester\TestCase {
 	public function testWrappingEverythingAtOnce() {

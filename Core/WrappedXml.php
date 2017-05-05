@@ -6,7 +6,7 @@ namespace Klapuch\Output;
  * Wrapped whole XML into particular tag
  */
 final class WrappedXml implements Format {
-	const EMPTY_XML = '';
+	private const EMPTY_XML = '';
 	private $wrap;
 	private $formats;
 
@@ -18,7 +18,7 @@ final class WrappedXml implements Format {
 	public function with($tag, $content = null): Format {
 		return new self(
 			$this->wrap,
-			...array_map(function(Format $format) use($tag, $content): Format {
+			...array_map(function(Format $format) use ($tag, $content): Format {
 				return $format->with($tag, $content);
 			}, $this->formats)
 		);
@@ -28,7 +28,7 @@ final class WrappedXml implements Format {
 		return new self(
 			$this->wrap,
 			...array_map(
-				function(Format $format) use($tag, $adjustment): Format {
+				function(Format $format) use ($tag, $adjustment): Format {
 					return $format->adjusted($tag, $adjustment);
 				},
 				$this->formats

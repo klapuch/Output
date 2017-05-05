@@ -6,7 +6,7 @@ namespace Klapuch\Output;
  * Format created from DOM
  */
 final class DomFormat implements Format {
-	const OUTPUTS = [
+	private const OUTPUTS = [
 		'xml' => 'saveXml',
 		'html' => 'saveHtml',
 	];
@@ -24,13 +24,13 @@ final class DomFormat implements Format {
 	}
 
 	public function adjusted($tag, callable $adjustment): Format {
-		foreach($this->dom->getElementsByTagName($tag) as $element)
+		foreach ($this->dom->getElementsByTagName($tag) as $element)
 			$element->nodeValue = call_user_func($adjustment, $element->nodeValue);
 		return $this;
 	}
 
 	public function serialization(): string {
-		if($this->supported($this->output))
+		if ($this->supported($this->output))
 			return $this->dom->{self::OUTPUTS[strtolower($this->output)]}();
 		throw new \InvalidArgumentException(
 			sprintf('Format "%s" is not supported', $this->output)
@@ -43,7 +43,7 @@ final class DomFormat implements Format {
 	 * @return bool
 	 */
 	private function supported(string $output): bool {
-		return (bool)array_uintersect(
+		return (bool) array_uintersect(
 			[$output],
 			array_keys(self::OUTPUTS),
 			'strcasecmp'

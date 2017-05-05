@@ -13,7 +13,7 @@ final class FakeFormat implements Format {
 	}
 
 	public function with($tag, $value = null): Format {
-		return new self($this->serialization() . "|$tag|$value|");
+		return new self(sprintf('%s|%s|%s|', $this->serialization(), $tag, $value));
 	}
 
 	public function adjusted($tag, callable $adjustment): Format {

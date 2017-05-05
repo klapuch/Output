@@ -7,7 +7,7 @@ interface Format {
 	 * Prepend/Append next element
 	 * @param mixed $tag
 	 * @param mixed $content
-	 * @return Format
+	 * @return \Klapuch\Output\Format
 	 */
 	public function with($tag, $content = null): self;
 
@@ -21,7 +21,7 @@ interface Format {
 	 * Adjusted format within the given tag and applicable adjustment
 	 * @param mixed $tag
 	 * @param callable $adjustment
-	 * @return Format
+	 * @return \Klapuch\Output\Format
 	 */
 	public function adjusted($tag, callable $adjustment): self;
 }

@@ -29,8 +29,8 @@ final class ValidXml implements Format {
 		$valid = $xml->schemaValidate($this->schema);
 		$errors = $this->errors(...libxml_get_errors());
 		libxml_use_internal_errors($previous);
-		if($valid)
-			return $xml->saveXml();
+		if ($valid)
+			return $xml->saveXML();
 		throw new \InvalidArgumentException(sprintf('XML is not valid: "%s"', $errors));
 	}
 

@@ -25,26 +25,30 @@ final class MergedXml implements Format {
 				[
 					new \SimpleXMLElement(
 						sprintf('<%1$s>%2$s</%1$s>', $tag, $content)
-					)
+					),
 				]
 			)
 		);
 	}
 
 	public function adjusted($tag, callable $adjustment): Format {
-		foreach($this->root->getElementsByTagName($tag) as $element)
+		foreach ($this->root->getElementsByTagName($tag) as $element)
 			$element->nodeValue = call_user_func($adjustment, $element->nodeValue);
 		return new self(
 			$this->root,
 			...array_reduce(
 				$this->elements,
-				function(array $adjusted, \SimpleXMLElement $element) use(
-					$tag, $adjustment
+				function(
+					array $adjusted,
+					\SimpleXMLElement $element
+				) use (
+					$tag,
+					$adjustment
 				): array {
-					if($element->getName() === $tag) {
+					if ($element->getName() === $tag) {
 						$element[0] = call_user_func(
 							$adjustment,
-							(string)$element
+							(string) $element
 						);
 					}
 					$adjusted[] = $element;
@@ -56,8 +60,8 @@ final class MergedXml implements Format {
 	}
 
 	public function serialization(): string {
-		foreach($this->elements as $element) {
-			$fragment = $this->root->createDocumentFragment();     
+		foreach ($this->elements as $element) {
+			$fragment = $this->root->createDocumentFragment();
 			$fragment->appendXML(
 				$this->withoutDeclaration(
 					$this->withoutTrailingSpaces($element->saveXML())
@@ -84,7 +88,6 @@ final class MergedXml implements Format {
 	 * @return string
 	 */
 	private function withoutTrailingSpaces(string $xml): string {
-		$bom = pack('H*','EFBBBF');
-		return preg_replace("~^$bom~", '', trim($xml));
+		return preg_replace(sprintf('~^%s~', pack('H*', 'EFBBBF')), '', trim($xml));
 	}
 }

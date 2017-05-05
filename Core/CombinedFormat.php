@@ -22,9 +22,10 @@ final class CombinedFormat implements Format {
 	public function adjusted($key, callable $adjustment): Format {
 		return new self(
 			...array_map(
-				function(Format $format) use($key, $adjustment): Format {
+				function(Format $format) use ($key, $adjustment): Format {
 					return $format->adjusted($key, $adjustment);
-				}, $this->formats
+				},
+				$this->formats
 			)
 		);
 	}

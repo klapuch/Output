@@ -1,15 +1,16 @@
 <?php
+declare(strict_types = 1);
 /**
  * @testCase
- * @phpVersion > 7.0
+ * @phpVersion > 7.1
  */
-namespace Klapuch\Unit\Output;
+namespace Klapuch\Output\Unit;
 
 use Klapuch\Output;
 use Tester;
 use Tester\Assert;
 
-require __DIR__ . '/../../bootstrap.php';
+require __DIR__ . '/../bootstrap.php';
 
 final class MergedXml extends Tester\TestCase {
 	public function testMergingWithoutAddedXmlDeclaration() {
@@ -50,7 +51,7 @@ final class MergedXml extends Tester\TestCase {
 
 	public function testRemovingWhiteSpaces() {
 		$root = new \DOMDocument();
-		$root->loadXML(pack('H*','EFBBBF') . '<root></root>');
+		$root->loadXML(pack('H*', 'EFBBBF') . '<root></root>');
 		Assert::same(
 			'<?xml version="1.0"?>
 <root>
@@ -118,7 +119,8 @@ final class MergedXml extends Tester\TestCase {
 <root><element>ELEMENT</element><merged><inner>INNER</inner></merged><another>ANOTHER</another></root>',
 			trim(
 				(new Output\MergedXml(
-					$root, ...$merge->xpath('child::*')
+					$root,
+					...$merge->xpath('child::*')
 				))->serialization()
 			)
 		);
