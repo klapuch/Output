@@ -23,8 +23,8 @@ final class ValidXml implements Format {
 	}
 
 	public function serialization(): string {
+		$previous = libxml_use_internal_errors(true);
 		try {
-			$previous = libxml_use_internal_errors(true);
 			$xml = new \DOMDocument();
 			$xml->loadXML($this->origin->serialization());
 			if ($xml->schemaValidate($this->schema))
