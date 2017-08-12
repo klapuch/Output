@@ -23,15 +23,21 @@ final class ValidXml implements Format {
 	}
 
 	public function serialization(): string {
-		$previous = libxml_use_internal_errors(true);
-		$xml = new \DOMDocument();
-		$xml->loadXML($this->origin->serialization());
-		$valid = $xml->schemaValidate($this->schema);
-		$errors = $this->errors(...libxml_get_errors());
-		libxml_use_internal_errors($previous);
-		if ($valid)
-			return $xml->saveXML();
-		throw new \InvalidArgumentException(sprintf('XML is not valid: "%s"', $errors));
+		try {
+			$previous = libxml_use_internal_errors(true);
+			$xml = new \DOMDocument();
+			$xml->loadXML($this->origin->serialization());
+			if ($xml->schemaValidate($this->schema))
+				return $xml->saveXML();
+			throw new \UnexpectedValueException(
+				sprintf(
+					'XML is not valid: "%s"',
+					$this->errors(...libxml_get_errors())
+				)
+			);
+		} finally {
+			libxml_use_internal_errors($previous);
+		}
 	}
 
 	private function errors(\LibXMLError ...$errors): string {

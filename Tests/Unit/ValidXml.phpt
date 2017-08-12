@@ -35,7 +35,7 @@ final class ValidXml extends Tester\TestCase {
 	}
 
 	/**
-	 * @throws \InvalidArgumentException XML is not valid: "Element 'name': Element content is not allowed, because the type definition is simple."
+	 * @throws \UnexpectedValueException XML is not valid: "Element 'name': Element content is not allowed, because the type definition is simple."
 	 */
 	public function testInvalidXmlAgainstSchema() {
 		$xml = '<?xml version="1.0" encoding="utf-8"?>' . PHP_EOL;
@@ -56,7 +56,7 @@ final class ValidXml extends Tester\TestCase {
 	}
 
 	/**
-	 * @throws \InvalidArgumentException XML is not valid: "Element 'name': 'xxx' is not a valid value of the atomic type 'xs:int'. | Element 'second': This element is not expected. Expected is ( title )."
+	 * @throws \UnexpectedValueException XML is not valid: "Element 'name': 'xxx' is not a valid value of the atomic type 'xs:int'. | Element 'second': This element is not expected. Expected is ( title )."
 	 */
 	public function testMultipleInvalidParts() {
 		$xml = '<?xml version="1.0" encoding="utf-8"?>' . PHP_EOL;
@@ -95,6 +95,29 @@ final class ValidXml extends Tester\TestCase {
 			Tester\FileMock::create($xsd)
 		))->serialization();
 		Assert::false(libxml_use_internal_errors(false));
+	}
+
+	/**
+	 * @throws \UnexpectedValueException XML is not valid: "Start tag expected, '<' not found | The document has no document element."
+	 */
+	public function testInvalidXmlAsInput() {
+		$xml = 'Dominik Klapuch';
+		$xsd = '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		  <xs:element name="root">
+			<xs:complexType>
+			  <xs:sequence>
+				<xs:element name="name" type="xs:string"/>
+			  </xs:sequence>
+			</xs:complexType>
+		  </xs:element>
+		</xs:schema>';
+		Assert::same(
+			$xml,
+			(new Output\ValidXml(
+				new Output\FakeFormat($xml),
+				Tester\FileMock::create($xsd)
+			))->serialization()
+		);
 	}
 }
 
