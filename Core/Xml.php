@@ -48,7 +48,8 @@ final class Xml implements Format {
 		}
 		return (string) $this->element(
 			$this->root,
-			(new self($this->values))->serialization()
+			(new self($this->values))->serialization(),
+			$this->attributes($this->values)
 		);
 	}
 
@@ -57,12 +58,33 @@ final class Xml implements Format {
 	 * If the tag is numeric, skip it as it is not allowed
 	 * @param string $tag
 	 * @param string|self $content
+	 * @param string[] $attributes
 	 * @return string|\Klapuch\Output\Xml|null
 	 */
-	private function element(string $tag, $content) {
-		return is_numeric($tag)
-			? $content
-			: sprintf('<%1$s>%2$s</%1$s>', $tag, $content);
+	private function element(string $tag, $content, array $attributes = []) {
+		if (substr($tag, 0, 1) !== '@') {
+			return is_numeric($tag)
+				? $content
+				: sprintf(
+					'<%1$s%3$s>%2$s</%1$s>',
+					$tag,
+					$content,
+					($attributes ? ' ' : '') . implode(
+						' ',
+						array_map(
+							function(string $attribute, string $value): string {
+								return sprintf(
+									'%s="%s"',
+									$this->toXml($attribute),
+									$this->toXml($value)
+								);
+							},
+							array_keys($attributes),
+							$attributes
+						)
+					)
+				);
+		}
 	}
 
 	/**
@@ -81,9 +103,8 @@ final class Xml implements Format {
 	 * @return string
 	 */
 	private function cast($value): string {
-		if (is_bool($value)) {
+		if (is_bool($value))
 			return $value ? 'true' : 'false';
-		}
 		return (string) $value;
 	}
 
@@ -104,5 +125,29 @@ final class Xml implements Format {
 	 */
 	private function adjustable(string $tag, array $values): bool {
 		return isset($values[$tag]);
+	}
+
+	/**
+	 * Available attributes
+	 * @param array $values
+	 * @return array
+	 */
+	private function attributes(array $values): array {
+		$attributes = array_filter(
+			array_filter($values, 'is_string'),
+			function(string $value): bool {
+				return substr($value, 0, 1) === '@';
+			},
+			ARRAY_FILTER_USE_KEY
+		);
+		return array_combine(
+			array_map(
+				function(string $attribute): string {
+					return substr($attribute, 1);
+				},
+				array_keys($attributes)
+			),
+			$attributes
+		);
 	}
 }

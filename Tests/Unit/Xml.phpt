@@ -159,6 +159,36 @@ final class Xml extends Tester\TestCase {
 			->serialization()
 		);
 	}
+
+	public function testAttribute() {
+		Assert::same(
+			'<root type="useful"><price>400</price></root>',
+			(new Output\Xml(
+				['price' => 400, '@type' => 'useful'],
+				'root'
+			))->serialization()
+		);
+	}
+
+	public function testXssProofAttribute() {
+		Assert::same(
+			'<root &amp;type="&amp;useful"><price>400</price></root>',
+			(new Output\Xml(
+				['price' => 400, '@&type' => '&useful'],
+				'root'
+			))->serialization()
+		);
+	}
+
+	public function testMultipleAttributes() {
+		Assert::same(
+			'<root type="useful" name="me"><price>400</price></root>',
+			(new Output\Xml(
+				['price' => 400, '@type' => 'useful', '@name' => 'me'],
+				'root'
+			))->serialization()
+		);
+	}
 }
 
 (new Xml())->run();
