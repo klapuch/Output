@@ -18,7 +18,7 @@
 	"ext-simplexml": "*"
   },
   "require-dev": {
-	"nette/tester": "@dev",
+	"nette/tester": "^2.0",
 	"jakub-onderka/php-parallel-lint": "^0.9.2",
 	"slevomat/coding-standard": "^2.3",
 	"sebastian/phpcpd": "^3.0",
