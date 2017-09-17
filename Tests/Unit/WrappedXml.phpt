@@ -37,11 +37,11 @@ final class WrappedXml extends Tester\TestCase {
 
 	public function testAdjustingUsingPassedFormats() {
 		Assert::same(
-			'<root><a>FOO</a><b>bar</b></root>',
+			'<root><x><a>FOO</a></x><y><b>bar</b></y></root>',
 			(new Output\WrappedXml(
 				'root',
-				new Output\Xml(['a' => 'foo']),
-				new Output\Xml(['b' => 'bar'])
+				new Output\Xml(['a' => 'foo'], 'x'),
+				new Output\Xml(['b' => 'bar'], 'y')
 			))->adjusted('a', 'strtoupper')
 			->serialization()
 		);
@@ -49,11 +49,11 @@ final class WrappedXml extends Tester\TestCase {
 
 	public function testIgnoringUnknownTag() {
 		Assert::same(
-			'<root><a>foo</a><b>bar</b></root>',
+			'<root><x><a>foo</a></x><y><b>bar</b></y></root>',
 			(new Output\WrappedXml(
 				'root',
-				new Output\Xml(['a' => 'foo']),
-				new Output\Xml(['b' => 'bar'])
+				new Output\Xml(['a' => 'foo'], 'x'),
+				new Output\Xml(['b' => 'bar'], 'y')
 			))->adjusted('xxx', 'strtoupper')
 			->serialization()
 		);
