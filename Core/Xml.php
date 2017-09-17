@@ -28,50 +28,65 @@ final class Xml implements Format {
 	}
 
 	public function serialization(): string {
-		$dom = new \DOMDocument('1.0', 'UTF-8');
-		$dom->appendChild(
-			array_reduce(
-				array_keys($this->values),
-				function(\DOMElement $root, $tag) use ($dom): \DOMElement {
-					if (substr($tag, 0, 1) === '@')
-						$root->setAttribute(substr($tag, 1), $this->values[$tag]);
-					else
-						$root->appendChild($dom->createElement($tag, $this->toXml($this->values[$tag])));
-					return $root;
-				},
-				$dom->createElement($this->root)
-			)
-		);
-		return trim($this->withoutDeclaration($dom->saveXML()));
-	}
+		return (new class([$this->root => $this->values], '1.0', 'UTF-8') extends \DOMDocument {
+			private $values;
 
-	/**
-	 * XML string without declaration <?xml ... ?>
-	 * @param string $xml
-	 * @return string
-	 */
-	private function withoutDeclaration(string $xml): string {
-		return substr($xml, strpos($xml, '?>') + 2);
-	}
+			public function __construct(array $values, string $version, string $encoding) {
+				parent::__construct($version, $encoding);
+				$this->values = $values;
+			}
 
-	/**
-	 * Value satisfying XML standards
-	 * @param mixed $content
-	 * @return string
-	 */
-	private function toXml($content): string {
-		return htmlspecialchars($this->cast($content), ENT_XML1, 'UTF-8');
-	}
+			/**
+			 * @param mixed $mixed
+			 * @param \DOMElement|null $element
+			 */
+			private function fromMixed($mixed, \DOMElement $element = null): void {
+				$element = $element ?? $this;
+				if (is_array($mixed)) {
+					foreach ($mixed as $tag => $mixedElement) {
+						if (is_int($tag)) {
+							if ($tag === 0) {
+								$node = $element;
+							} else {
+								$node = $this->createElement($element->tagName);
+								$element->parentNode->appendChild($node);
+							}
+						} else {
+							if (substr($tag, 0, 1) === '@') {
+								$element->setAttribute(substr($tag, 1), $mixedElement);
+								$node = null;
+							} else {
+								$node = $this->createElement($tag);
+								$element->appendChild($node);
+							}
+						}
+						$this->fromMixed($mixedElement, $node);
+					}
+				} else {
+					if (isset($element->tagName))
+						$element->appendChild($this->createTextNode($this->cast($mixed)));
+				}
+			}
 
-	/**
-	 * Cast the value to be proper XML and XSD proof
-	 * @param mixed $value
-	 * @return string
-	 */
-	private function cast($value): string {
-		if (is_bool($value))
-			return $value ? 'true' : 'false';
-		return (string) $value;
+			public function saveXML(\DOMNode $node = null, $options = 0): string {
+				$this->fromMixed($this->values);
+				return trim($this->withoutDeclaration(parent::saveXML($node, $options)));
+			}
+
+			/**
+			 * @param mixed $value
+			 * @return string
+			 */
+			private function cast($value): string {
+				if (is_bool($value))
+					return $value ? 'true' : 'false';
+				return (string) $value;
+			}
+
+			private function withoutDeclaration(string $xml): string {
+				return substr($xml, strpos($xml, '?>') + 2);
+			}
+		})->saveXML();
 	}
 
 	/**

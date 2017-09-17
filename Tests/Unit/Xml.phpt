@@ -32,7 +32,7 @@ final class Xml extends Tester\TestCase {
 			))->serialization()
 		);
 	}
-//
+
 	public function testEscapedCharacters() {
 		Assert::same(
 			'<root><escape>&lt;&gt;"&amp;\'</escape></root>',
@@ -42,12 +42,31 @@ final class Xml extends Tester\TestCase {
 			))->serialization()
 		);
 	}
-//
+
 	public function testUsingUt8Encoding() {
 		Assert::same(
 			'<root><encoding>Koňíček úpěl</encoding></root>',
 			(new Output\Xml(
 				['encoding' => 'Koňíček úpěl'],
+				'root'
+			))->serialization()
+		);
+	}
+
+	public function testNestedChild() {
+		Assert::same(
+			'<root><price>400</price><type>useful</type><lines><id>123</id><name>ABC</name></lines></root>',
+			(new Output\Xml(
+				[
+					'price' => 400,
+					'type' => 'useful',
+					'lines' => [
+						[
+							'id' => 123,
+							'name' => 'ABC',
+						],
+					],
+				],
 				'root'
 			))->serialization()
 		);

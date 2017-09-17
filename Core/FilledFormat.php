@@ -30,10 +30,7 @@ final class FilledFormat implements Format {
 		return array_reduce(
 			array_keys($this->set),
 			function(Format $format, string $name) use ($set): Format {
-				return $format->with(
-					$name,
-					$set[$name] === null ? '' : $set[$name]
-				);
+				return $format->with($name, $set[$name]);
 			},
 			$this->origin
 		);
