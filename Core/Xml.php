@@ -6,18 +6,15 @@ namespace Klapuch\Output;
  * Values printed in XML format
  */
 final class Xml implements Format {
-	private const EMPTY_XML = '';
 	private $values;
 	private $root;
 
-	public function __construct(array $values, string $root = null) {
+	public function __construct(array $values, string $root) {
 		$this->values = $values;
 		$this->root = $root;
 	}
 
 	public function with($tag, $content = null): Format {
-		if ($content === null)
-			return new self([$tag => $this->values], $this->root);
 		return new self($this->values + [$tag => $content], $this->root);
 	}
 
@@ -31,70 +28,39 @@ final class Xml implements Format {
 	}
 
 	public function serialization(): string {
-		if ($this->root === null) {
-			return array_reduce(
+		$dom = new \DOMDocument('1.0', 'UTF-8');
+		$dom->appendChild(
+			array_reduce(
 				array_keys($this->values),
-				function(string $xml, string $tag): string {
-					$xml .= $this->element(
-						$tag,
-						$this->isParent($this->values[$tag])
-						? (new self($this->values[$tag]))->serialization()
-						: $this->toXml($this->cast($this->values[$tag]))
-					);
-					return $xml;
+				function(\DOMElement $root, $tag) use ($dom): \DOMElement {
+					if (substr($tag, 0, 1) === '@')
+						$root->setAttribute(substr($tag, 1), $this->values[$tag]);
+					else
+						$root->appendChild($dom->createElement($tag, $this->toXml($this->values[$tag])));
+					return $root;
 				},
-				self::EMPTY_XML
-			);
-		}
-		return (string) $this->element(
-			$this->root,
-			(new self($this->values))->serialization(),
-			$this->attributes($this->values)
+				$dom->createElement($this->root)
+			)
 		);
+		return trim($this->withoutDeclaration($dom->saveXML()));
 	}
 
 	/**
-	 * Element with tag and its value
-	 * If the tag is numeric, skip it as it is not allowed
-	 * @param string $tag
-	 * @param string|self $content
-	 * @param string[] $attributes
-	 * @return string|\Klapuch\Output\Xml|null
+	 * XML string without declaration <?xml ... ?>
+	 * @param string $xml
+	 * @return string
 	 */
-	private function element(string $tag, $content, array $attributes = []) {
-		if (substr($tag, 0, 1) !== '@') {
-			return is_numeric($tag)
-				? $content
-				: sprintf(
-					'<%1$s%3$s>%2$s</%1$s>',
-					$tag,
-					$content,
-					($attributes ? ' ' : '') . implode(
-						' ',
-						array_map(
-							function(string $attribute, string $value): string {
-								return sprintf(
-									'%s="%s"',
-									$this->toXml($attribute),
-									$this->toXml($value)
-								);
-							},
-							array_keys($attributes),
-							$attributes
-						)
-					)
-				);
-		}
+	private function withoutDeclaration(string $xml): string {
+		return substr($xml, strpos($xml, '?>') + 2);
 	}
 
 	/**
-	 * Check if the given element is parent of childrens
-	 * Faster version of is_array (because of the recursion)
-	 * @param mixed $element
-	 * @return bool
+	 * Value satisfying XML standards
+	 * @param mixed $content
+	 * @return string
 	 */
-	private function isParent($element): bool {
-		return $element === (array) $element;
+	private function toXml($content): string {
+		return htmlspecialchars($this->cast($content), ENT_XML1, 'UTF-8');
 	}
 
 	/**
@@ -109,15 +75,6 @@ final class Xml implements Format {
 	}
 
 	/**
-	 * Value satisfying XML standards
-	 * @param string $content
-	 * @return string
-	 */
-	private function toXml(string $content): string {
-		return htmlspecialchars($content, ENT_QUOTES | ENT_XML1, 'UTF-8');
-	}
-
-	/**
 	 * Is the tag adjustable?
 	 * @param string $tag
 	 * @param array $values
@@ -125,29 +82,5 @@ final class Xml implements Format {
 	 */
 	private function adjustable(string $tag, array $values): bool {
 		return isset($values[$tag]);
-	}
-
-	/**
-	 * Available attributes
-	 * @param array $values
-	 * @return array
-	 */
-	private function attributes(array $values): array {
-		$attributes = array_filter(
-			array_filter($values, 'is_string'),
-			function(string $value): bool {
-				return substr($value, 0, 1) === '@';
-			},
-			ARRAY_FILTER_USE_KEY
-		);
-		return array_combine(
-			array_map(
-				function(string $attribute): string {
-					return substr($attribute, 1);
-				},
-				array_keys($attributes)
-			),
-			$attributes
-		);
 	}
 }

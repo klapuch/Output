@@ -32,17 +32,17 @@ final class Xml extends Tester\TestCase {
 			))->serialization()
 		);
 	}
-
+//
 	public function testEscapedCharacters() {
 		Assert::same(
-			'<root><escape>&lt;&gt;&quot;&amp;&apos;</escape></root>',
+			'<root><escape>&lt;&gt;"&amp;\'</escape></root>',
 			(new Output\Xml(
 				['escape' => "<>\"&'"],
 				'root'
 			))->serialization()
 		);
 	}
-
+//
 	public function testUsingUt8Encoding() {
 		Assert::same(
 			'<root><encoding>Koňíček úpěl</encoding></root>',
@@ -53,27 +53,8 @@ final class Xml extends Tester\TestCase {
 		);
 	}
 
-	public function testNestedParents() {
-		Assert::same(
-			'<root><price>400</price><type>useful</type><lines><id>123</id><name>ABC</name></lines></root>',
-			(new Output\Xml(
-				[
-					'price' => 400,
-					'type' => 'useful',
-					'lines' => [
-						[
-							'id' => 123,
-							'name' => 'ABC',
-						],
-					],
-				],
-				'root'
-			))->serialization()
-		);
-	}
-
-	public function testNoEmptyShortTag() {
-		Assert::same('<root></root>', (new Output\Xml([], 'root'))->serialization());
+	public function testEmptyShortTag() {
+		Assert::same('<root/>', (new Output\Xml([], 'root'))->serialization());
 	}
 
 	public function testAppendingToEmptyXml() {
@@ -92,27 +73,6 @@ final class Xml extends Tester\TestCase {
 			(new Output\Xml(['name' => 'Dominik'], 'root'))
 			->with('id', '5')
 			->with('name', 'foo')
-			->serialization()
-		);
-	}
-
-	public function testWrappingStatedNodes() {
-		Assert::same(
-			'<root><AAA><XXX><name>Dominik</name></XXX></AAA></root>',
-			(new Output\Xml(['name' => 'Dominik'], 'root'))
-			->with('XXX')
-			->with('AAA')
-			->serialization()
-		);
-	}
-
-	public function testAddingParentNodes() {
-		Assert::same(
-			'<root><OUTER><name>Dominik</name><XXX><xxx_inner><who>xxx</who></xxx_inner></XXX><INNER><who>me</who></INNER></OUTER></root>',
-			(new Output\Xml(['name' => 'Dominik'], 'root'))
-			->with('XXX', ['xxx_inner' => ['who' => 'xxx']])
-			->with('INNER', ['who' => 'me'])
-			->with('OUTER')
 			->serialization()
 		);
 	}
@@ -153,8 +113,8 @@ final class Xml extends Tester\TestCase {
 
 	public function testIgnoringUnknownTagToBeAdjusted() {
 		Assert::same(
-			'<chars>foo</chars>',
-			(new Output\Xml(['chars' => 'foo']))
+			'<root><chars>foo</chars></root>',
+			(new Output\Xml(['chars' => 'foo'], 'root'))
 			->adjusted('foo', 'strtoupper')
 			->serialization()
 		);
@@ -170,7 +130,10 @@ final class Xml extends Tester\TestCase {
 		);
 	}
 
-	public function testXssProofAttribute() {
+	/**
+	 * @throws \DOMException Invalid Character Error
+	 */
+	public function testThrowingOnWrongAttribute() {
 		Assert::same(
 			'<root &amp;type="&amp;useful"><price>400</price></root>',
 			(new Output\Xml(
