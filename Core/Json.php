@@ -8,7 +8,7 @@ namespace Klapuch\Output;
 final class Json implements Format {
 	private $values;
 
-	public function __construct(array $values) {
+	public function __construct(array $values = []) {
 		$this->values = $values;
 	}
 
