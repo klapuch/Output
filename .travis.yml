@@ -4,6 +4,8 @@ language: php
 
 php:
   - 7.1
+  - 7.2
+  - nightly
 
 before_install:
   - composer self-update
@@ -12,16 +14,11 @@ install:
   - composer install --no-interaction --prefer-dist --no-scripts --no-progress --no-suggest --optimize-autoloader --classmap-authoritative
 
 script:
-  - ./vendor/bin/phing ci
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then vendor/bin/phing ci; else vendor/bin/phing; fi # Code coverage test
 
 after_script:
-    - >
-        wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
-        && php coveralls.phar --verbose --config Tests/.coveralls.yml;
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar; fi
+    - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then php coveralls.phar --verbose --config Tests/.coveralls.yml; fi
 
 after_failure:
   - for i in $(find Tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
-
-cache:
-    directories:
-      - $HOME/.composer/cache
