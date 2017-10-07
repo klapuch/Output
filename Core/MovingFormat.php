@@ -21,14 +21,18 @@ final class MovingFormat implements Format {
 	}
 
 	public function serialization(): string {
-		return (new FilledFormat(
-			$this->origin,
-			$this->copy($this->moves($this->source, $this->moves), $this->source)
-		))->serialization();
+		return $this->self()->serialization();
 	}
 
 	public function adjusted($tag, callable $adjustment): Format {
-		return $this->origin->adjusted($tag, $adjustment);
+		return $this->self()->adjusted($tag, $adjustment);
+	}
+
+	private function self(): FilledFormat {
+		return new FilledFormat(
+			$this->origin,
+			$this->copy($this->moves($this->source, $this->moves), $this->source)
+		);
 	}
 
 	/**

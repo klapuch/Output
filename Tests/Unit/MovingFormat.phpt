@@ -22,6 +22,17 @@ final class MovingFormat extends \Tester\TestCase {
 			))->serialization()
 		);
 	}
+
+	public function testAdjustingMovedKeys() {
+		Assert::same(
+			'<root><sid>BLA</sid></root>',
+			(new Output\MovingFormat(
+				new Output\Xml([], 'root'),
+				['sid' => 'bla'],
+				['sid']
+			))->adjusted('sid', 'strtoupper')->serialization()
+		);
+	}
 }
 
 (new MovingFormat())->run();
