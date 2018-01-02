@@ -12,10 +12,7 @@
 	}
   ],
   "require": {
-	"php": ">=7.1",
-	"ext-dom": "*",
-	"ext-xsl": "*",
-	"ext-simplexml": "*"
+	"php": ">=7.1"
   },
   "require-dev": {
 	"nette/tester": "^2.0",
