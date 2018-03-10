@@ -19,6 +19,8 @@ final class Json implements Format {
 	}
 
 	public function adjusted($tag, callable $adjustment): Format {
+		if ($tag === null)
+			return new self(call_user_func($adjustment, $this->values));
 		return new self(
 			[$tag => call_user_func($adjustment, $this->values[$tag])] + $this->values
 		);

@@ -82,6 +82,21 @@ final class Json extends Tester\TestCase {
 			)
 		);
 	}
+
+	public function testAdjustingWhole() {
+		Assert::same(
+			['age' => 22],
+			json_decode(
+				(new Output\Json(['name' => 'Dom', 'age' => 21, 'nested' => ['foo' => 'bar', 'bar' => 'baz']]))
+					->adjusted(null, function (array $self) {
+						$new['age'] = $self['age'] + 1;
+						return $new;
+					})
+					->serialization(),
+				true
+			)
+		);
+	}
 }
 
 (new Json())->run();
