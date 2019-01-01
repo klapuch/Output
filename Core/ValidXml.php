@@ -1,12 +1,16 @@
 <?php
 declare(strict_types = 1);
+
 namespace Klapuch\Output;
 
 /**
  * Valid XML determined by XML Schema
  */
 final class ValidXml implements Format {
+	/** @var \Klapuch\Output\Format */
 	private $origin;
+
+	/** @var string */
 	private $schema;
 
 	public function __construct(Format $origin, string $schema) {
@@ -14,10 +18,20 @@ final class ValidXml implements Format {
 		$this->schema = $schema;
 	}
 
+	/**
+	 * @param mixed $tag
+	 * @param mixed|null $content
+	 * @return \Klapuch\Output\Format
+	 */
 	public function with($tag, $content = null): Format {
 		return $this->origin->with($tag, $content);
 	}
 
+	/**
+	 * @param mixed $tag
+	 * @param callable $adjustment
+	 * @return \Klapuch\Output\Format
+	 */
 	public function adjusted($tag, callable $adjustment): Format {
 		return $this->origin->adjusted($tag, $adjustment);
 	}
@@ -44,7 +58,7 @@ final class ValidXml implements Format {
 		return implode(
 			' | ',
 			array_map(
-				function(\LibXMLError $error): string {
+				static function(\LibXMLError $error): string {
 					return trim($error->message);
 				},
 				$errors

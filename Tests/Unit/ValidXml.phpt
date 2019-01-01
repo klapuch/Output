@@ -1,9 +1,11 @@
 <?php
 declare(strict_types = 1);
+
 /**
  * @testCase
  * @phpVersion > 7.1
  */
+
 namespace Klapuch\Output\Unit;
 
 use Klapuch\Output;
@@ -13,7 +15,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 final class ValidXml extends Tester\TestCase {
-	public function testValidXmlAgainstSchema() {
+	public function testValidXmlAgainstSchema(): void {
 		$xml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 		$xml .= '<root><name>Dominik Klapuch</name></root>' . "\n";
 		$xsd = '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
@@ -37,7 +39,7 @@ final class ValidXml extends Tester\TestCase {
 	/**
 	 * @throws \UnexpectedValueException XML is not valid: "Element 'name': Element content is not allowed, because the type definition is simple."
 	 */
-	public function testInvalidXmlAgainstSchema() {
+	public function testInvalidXmlAgainstSchema(): void {
 		$xml = '<?xml version="1.0" encoding="utf-8"?>' . PHP_EOL;
 		$xml .= '<root><name><first>Dominik</first></name></root>' . PHP_EOL;
 		$xsd = '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
@@ -58,7 +60,7 @@ final class ValidXml extends Tester\TestCase {
 	/**
 	 * @throws \UnexpectedValueException XML is not valid: "Element 'name': 'xxx' is not a valid value of the atomic type 'xs:int'. | Element 'second': This element is not expected. Expected is ( title )."
 	 */
-	public function testMultipleInvalidParts() {
+	public function testMultipleInvalidParts(): void {
 		$xml = '<?xml version="1.0" encoding="utf-8"?>' . PHP_EOL;
 		$xml .= '<root><name>xxx</name><second>Klapuch</second></root>' . PHP_EOL;
 		$xsd = '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
@@ -77,7 +79,7 @@ final class ValidXml extends Tester\TestCase {
 		))->serialization();
 	}
 
-	public function testLibxmlWithoutChange() {
+	public function testLibxmlWithoutChange(): void {
 		$xml = '<?xml version="1.0" encoding="utf-8"?>' . PHP_EOL;
 		$xml .= '<root><name>Dominik Klapuch</name></root>' . PHP_EOL;
 		$xsd = '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
@@ -100,7 +102,7 @@ final class ValidXml extends Tester\TestCase {
 	/**
 	 * @throws \UnexpectedValueException XML is not valid: "Start tag expected, '<' not found | The document has no document element."
 	 */
-	public function testInvalidXmlAsInput() {
+	public function testInvalidXmlAsInput(): void {
 		$xml = 'Dominik Klapuch';
 		$xsd = '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 		  <xs:element name="root">

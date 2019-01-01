@@ -1,9 +1,11 @@
 <?php
 declare(strict_types = 1);
+
 /**
  * @testCase
  * @phpVersion > 7.1
  */
+
 namespace Klapuch\Output\Unit;
 
 use Klapuch\Output;
@@ -13,7 +15,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 final class XsltTemplate extends Tester\TestCase {
-	public function testRenderingWithCorrectEncoding() {
+	public function testRenderingWithCorrectEncoding(): void {
 		$template = Tester\FileMock::create(
 			'<?xml version="1.0" encoding="UTF-8"?>
 			<xsl:stylesheet version="1.0" 
@@ -33,7 +35,7 @@ final class XsltTemplate extends Tester\TestCase {
 		);
 	}
 
-	public function testRenderingWitouhtExtraXmlDeclaration() {
+	public function testRenderingWitouhtExtraXmlDeclaration(): void {
 		$template = Tester\FileMock::create(
 			'<?xml version="1.0" encoding="UTF-8"?>
 			<xsl:stylesheet version="1.0" 
@@ -55,7 +57,7 @@ final class XsltTemplate extends Tester\TestCase {
 		);
 	}
 
-	public function testRenderingWithVariables() {
+	public function testRenderingWithVariables(): void {
 		$template = Tester\FileMock::create(
 			'<?xml version="1.0" encoding="UTF-8"?>
 			<xsl:stylesheet version="1.0" 
@@ -78,7 +80,7 @@ final class XsltTemplate extends Tester\TestCase {
 		);
 	}
 
-	public function testRegisteredFunctions() {
+	public function testRegisteredFunctions(): void {
 		$template = Tester\FileMock::create(
 			'<?xml version="1.0" encoding="UTF-8"?>
 			<xsl:stylesheet version="1.0" 

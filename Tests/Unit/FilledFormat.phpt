@@ -1,9 +1,11 @@
 <?php
 declare(strict_types = 1);
+
 /**
  * @testCase
  * @phpVersion > 7.1
  */
+
 namespace Klapuch\Output\Unit;
 
 use Klapuch\Output;
@@ -13,7 +15,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 final class FilledFormat extends Tester\TestCase {
-	public function testSerializingSetUsingOrigin() {
+	public function testSerializingSetUsingOrigin(): void {
 		Assert::same(
 			'|name|me||title|god|',
 			(new Output\FilledFormat(
@@ -23,7 +25,7 @@ final class FilledFormat extends Tester\TestCase {
 		);
 	}
 
-	public function testNullAsEmpty() {
+	public function testNullAsEmpty(): void {
 		Assert::same(
 			'<root><name>me</name><title></title></root>',
 			(new Output\FilledFormat(
@@ -33,7 +35,7 @@ final class FilledFormat extends Tester\TestCase {
 		);
 	}
 
-	public function testAppendingToSetUsingOrigin() {
+	public function testAppendingToSetUsingOrigin(): void {
 		Assert::same(
 			'|name|me||title|god||age|20|',
 			(new Output\FilledFormat(
@@ -43,7 +45,7 @@ final class FilledFormat extends Tester\TestCase {
 		);
 	}
 
-	public function testAdjustUsingOrigin() {
+	public function testAdjustUsingOrigin(): void {
 		Assert::same(
 			'MEgod',
 			(new Output\FilledFormat(

@@ -1,12 +1,16 @@
 <?php
 declare(strict_types = 1);
+
 namespace Klapuch\Output;
 
 /**
  * XSLT template
  */
 final class XsltTemplate implements Template {
+	/** @var string */
 	private $template;
+
+	/** @var \Klapuch\Output\Format */
 	private $stylesheet;
 
 	public function __construct(string $template, Format $stylesheet) {

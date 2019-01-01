@@ -1,9 +1,11 @@
 <?php
 declare(strict_types = 1);
+
 /**
  * @testCase
  * @phpVersion > 7.1
  */
+
 namespace Klapuch\Output\Unit;
 
 use Klapuch\Output;
@@ -13,7 +15,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 final class CombinedFormat extends Tester\TestCase {
-	public function testSerializingAllPassedFormats() {
+	public function testSerializingAllPassedFormats(): void {
 		Assert::same(
 			'abcd',
 			(new Output\CombinedFormat(
@@ -25,7 +27,7 @@ final class CombinedFormat extends Tester\TestCase {
 		);
 	}
 
-	public function testAppendingUsingTheLastFormat() {
+	public function testAppendingUsingTheLastFormat(): void {
 		Assert::same(
 			'abcd|Ekey|e|',
 			(new Output\CombinedFormat(
@@ -37,7 +39,7 @@ final class CombinedFormat extends Tester\TestCase {
 		);
 	}
 
-	public function testAdjustingEveryMatchingKey() {
+	public function testAdjustingEveryMatchingKey(): void {
 		Assert::same(
 			'ABCDe',
 			(new Output\CombinedFormat(

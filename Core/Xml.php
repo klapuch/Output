@@ -1,12 +1,16 @@
 <?php
 declare(strict_types = 1);
+
 namespace Klapuch\Output;
 
 /**
  * Values printed in XML format
  */
 final class Xml implements Format {
+	/** @var mixed[] */
 	private $values;
+
+	/** @var string */
 	private $root;
 
 	public function __construct(array $values, string $root) {
@@ -14,10 +18,20 @@ final class Xml implements Format {
 		$this->root = $root;
 	}
 
+	/**
+	 * @param mixed $tag
+	 * @param mixed|null $content
+	 * @return \Klapuch\Output\Format
+	 */
 	public function with($tag, $content = null): Format {
 		return new self($this->values + [$tag => $content], $this->root);
 	}
 
+	/**
+	 * @param mixed $tag
+	 * @param callable $adjustment
+	 * @return \Klapuch\Output\Format
+	 */
 	public function adjusted($tag, callable $adjustment): Format {
 		if (!$this->adjustable($tag, $this->values))
 			return $this;
@@ -29,6 +43,7 @@ final class Xml implements Format {
 
 	public function serialization(): string {
 		return (new class([$this->root => $this->values], '1.0', 'UTF-8') extends \DOMDocument {
+			/** @var mixed[] */
 			private $values;
 
 			public function __construct(array $values, string $version, string $encoding) {
@@ -40,8 +55,10 @@ final class Xml implements Format {
 			 * @param mixed $mixed
 			 * @param \DOMElement|null $element
 			 */
-			private function fromMixed($mixed, \DOMElement $element = null): void {
+			private function fromMixed($mixed, ?\DOMElement $element = null): void {
+				/** @var \DOMElement $element */
 				$element = $element ?? $this;
+
 				if (is_array($mixed)) {
 					foreach ($mixed as $tag => $mixedElement) {
 						if (is_int($tag)) {
@@ -68,7 +85,7 @@ final class Xml implements Format {
 				}
 			}
 
-			public function saveXML(\DOMNode $node = null, $options = 0): string {
+			public function saveXML(?\DOMNode $node = null, $options = 0): string {
 				$this->fromMixed($this->values);
 				return trim($this->withoutDeclaration(parent::saveXML($node, $options)));
 			}

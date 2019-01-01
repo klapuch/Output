@@ -1,9 +1,11 @@
 <?php
 declare(strict_types = 1);
+
 /**
  * @testCase
  * @phpVersion > 7.1
  */
+
 namespace Klapuch\Output\Unit;
 
 use Klapuch\Output;
@@ -13,7 +15,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 final class Json extends Tester\TestCase {
-	public function testSerializingToPrettyJson() {
+	public function testSerializingToPrettyJson(): void {
 		Assert::same(
 			'{
     "name": "Dom"
@@ -22,7 +24,7 @@ final class Json extends Tester\TestCase {
 		);
 	}
 
-	public function testAddingNewSimpleItem() {
+	public function testAddingNewSimpleItem(): void {
 		Assert::same(
 			['title' => 'none', 'name' => 'Dom'],
 			json_decode(
@@ -34,7 +36,7 @@ final class Json extends Tester\TestCase {
 		);
 	}
 
-	public function testNewAddedItemWithPriority() {
+	public function testNewAddedItemWithPriority(): void {
 		Assert::same(
 			['name' => 'Dom'],
 			json_decode(
@@ -46,7 +48,7 @@ final class Json extends Tester\TestCase {
 		);
 	}
 
-	public function testAddingArray() {
+	public function testAddingArray(): void {
 		Assert::same(
 			['properties' => ['age' => 21, 'eyes' => 'blue'], 'name' => 'Dom'],
 			json_decode(
@@ -58,7 +60,7 @@ final class Json extends Tester\TestCase {
 		);
 	}
 
-	public function testMergingFieldsWithSameName() {
+	public function testMergingFieldsWithSameName(): void {
 		Assert::same(
 			['properties' => ['age' => 22, 'skin' => 'white', 'eyes' => 'blue'], 'name' => 'Dom'],
 			json_decode(
@@ -71,7 +73,7 @@ final class Json extends Tester\TestCase {
 		);
 	}
 
-	public function testAdjustingSingleItem() {
+	public function testAdjustingSingleItem(): void {
 		Assert::same(
 			['name' => 'Dom'],
 			json_decode(
@@ -83,14 +85,13 @@ final class Json extends Tester\TestCase {
 		);
 	}
 
-	public function testAdjustingWhole() {
+	public function testAdjustingWhole(): void {
 		Assert::same(
 			['age' => 22],
 			json_decode(
 				(new Output\Json(['name' => 'Dom', 'age' => 21, 'nested' => ['foo' => 'bar', 'bar' => 'baz']]))
-					->adjusted(null, function (array $self) {
-						$new['age'] = $self['age'] + 1;
-						return $new;
+					->adjusted(null, static function (array $self) {
+						return ['age' => $self['age'] + 1];
 					})
 					->serialization(),
 				true

@@ -1,13 +1,19 @@
 <?php
 declare(strict_types = 1);
+
 namespace Klapuch\Output;
 
 /**
  * Format moving keys by your choice
  */
 final class MovingFormat implements Format {
+	/** @var \Klapuch\Output\Format */
 	private $origin;
+
+	/** @var mixed[] */
 	private $source;
+
+	/** @var mixed[] */
 	private $moves;
 
 	public function __construct(Format $origin, array $source, array $moves) {
@@ -16,6 +22,11 @@ final class MovingFormat implements Format {
 		$this->moves = $moves;
 	}
 
+	/**
+	 * @param mixed $tag
+	 * @param mixed|null $content
+	 * @return \Klapuch\Output\Format
+	 */
 	public function with($tag, $content = null): Format {
 		return $this->origin->with($tag, $content);
 	}
@@ -24,6 +35,11 @@ final class MovingFormat implements Format {
 		return $this->self()->serialization();
 	}
 
+	/**
+	 * @param mixed $tag
+	 * @param callable $adjustment
+	 * @return \Klapuch\Output\Format
+	 */
 	public function adjusted($tag, callable $adjustment): Format {
 		return $this->self()->adjusted($tag, $adjustment);
 	}
@@ -57,7 +73,7 @@ final class MovingFormat implements Format {
 	private function moves(array $source, array $moves): array {
 		return array_filter(
 			array_replace_recursive($source, $moves),
-			function($key) use ($moves): bool {
+			static function($key) use ($moves): bool {
 				return is_int($key) || is_array($moves[$key] ?? null);
 			},
 			ARRAY_FILTER_USE_KEY

@@ -1,9 +1,11 @@
 <?php
 declare(strict_types = 1);
+
 /**
  * @testCase
  * @phpVersion > 7.1
  */
+
 namespace Klapuch\Output\Unit;
 
 use Klapuch\Output;
@@ -13,7 +15,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 final class XPathExpression extends Tester\TestCase {
-	public function testMatchingExistingExpression() {
+	public function testMatchingExistingExpression(): void {
 		Assert::same(
 			['Dominik'],
 			(new Output\XPathExpression(
@@ -30,7 +32,7 @@ final class XPathExpression extends Tester\TestCase {
 		);
 	}
 
-	public function testUnknownExpressionWithoutMatch() {
+	public function testUnknownExpressionWithoutMatch(): void {
 		Assert::same(
 			[],
 			(new Output\XPathExpression(
