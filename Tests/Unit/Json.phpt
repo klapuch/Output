@@ -17,9 +17,7 @@ require __DIR__ . '/../bootstrap.php';
 final class Json extends Tester\TestCase {
 	public function testSerializingToPrettyJson(): void {
 		Assert::same(
-			'{
-    "name": "Dom"
-}',
+			'{"name":"Dom"}',
 			(new Output\Json(['name' => 'Dom']))->serialization()
 		);
 	}

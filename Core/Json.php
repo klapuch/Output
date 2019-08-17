@@ -39,6 +39,6 @@ final class Json implements Format {
 	}
 
 	public function serialization(): string {
-		return (string) json_encode($this->values, JSON_PRETTY_PRINT);
+		return (string) json_encode($this->values);
 	}
 }

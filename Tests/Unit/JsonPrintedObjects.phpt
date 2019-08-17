@@ -20,14 +20,7 @@ require __DIR__ . '/../bootstrap.php';
 final class JsonPrintedObjects extends Tester\TestCase {
 	public function testMergingMultipleToPrettyArray(): void {
 		Assert::same(
-			'[
-    {
-        "a": "b"
-    },
-    {
-        "c": "d"
-    }
-]',
+			'[{"a":"b"},{"c":"d"}]',
 			(new Output\JsonPrintedObjects(
 				static function (object $object, Output\Format $format): Output\Format {
 					return $object->print($format);
@@ -48,11 +41,7 @@ final class JsonPrintedObjects extends Tester\TestCase {
 
 	public function testMergingSingleToPrettyArray(): void {
 		Assert::same(
-			'[
-    {
-        "a": "b"
-    }
-]',
+			'[{"a":"b"}]',
 			(new Output\JsonPrintedObjects(
 				static function (object $object, Output\Format $format): Output\Format {
 					return $object->print($format);
@@ -68,14 +57,7 @@ final class JsonPrintedObjects extends Tester\TestCase {
 
 	public function testAdjustingWithKeptOrder(): void {
 		Assert::same(
-			'[
-    {
-        "a": "B"
-    },
-    {
-        "c": "D"
-    }
-]',
+			'[{"a":"B"},{"c":"D"}]',
 			(new Output\JsonPrintedObjects(
 				static function (object $object, Output\Format $format): Output\Format {
 					return $object->print($format);

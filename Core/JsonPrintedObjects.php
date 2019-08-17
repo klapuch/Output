@@ -21,17 +21,10 @@ final class JsonPrintedObjects implements Output\Format {
 	}
 
 	public function serialization(): string {
-		return (string) json_encode(
-			array_reduce(
-				$this->prints,
-				function(array $objects, object $object): array {
-					$objects[] = json_decode(call_user_func_array($this->response, [$object, new Output\Json()])->serialization(), true);
-					return $objects;
-				},
-				[]
-			),
-			JSON_PRETTY_PRINT
-		);
+		$objects = array_map(function (object $object): string {
+			return call_user_func_array($this->response, [$object, new Output\Json()])->serialization();
+		}, $this->prints);
+		return sprintf('[%s]', implode(',', $objects));
 	}
 
 	/**

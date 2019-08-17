@@ -10,8 +10,12 @@ final class ArrayFormat implements Format {
 	/** @var mixed[] */
 	private $values;
 
-	public function __construct(array $values) {
+	/** @var string */
+	private $delimiter;
+
+	public function __construct(array $values, string $delimiter = '') {
 		$this->values = $values;
+		$this->delimiter = $delimiter;
 	}
 
 	/**
@@ -40,6 +44,6 @@ final class ArrayFormat implements Format {
 	}
 
 	public function serialization(): string {
-		return implode($this->values);
+		return implode($this->delimiter, $this->values);
 	}
 }
